@@ -148,6 +148,44 @@ body{background:#000;color:#fff;font-family:'Helvetica Neue',Helvetica,Arial,san
 /* ===== SCENE TRANSITION ===== */
 .scene-flash{position:absolute;inset:0;z-index:100;background:#000;opacity:0;pointer-events:none;transition:opacity 0.4s}
 .scene-flash.active{opacity:0.7}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media(max-width:768px){
+  body{overflow:hidden}
+  .viewport{display:flex;flex-direction:column;align-items:center}
+  .church{transform-origin:top center;top:8px;left:50%;transform:translateX(-50%) scale(var(--church-scale,0.5))}
+  .header{padding:10px 14px}
+  .header-title{font-size:11px;letter-spacing:2px}
+  .header-location{font-size:8px}
+  .header-time{font-size:20px}
+  .header-phase{font-size:8px;letter-spacing:1px}
+  .legend{top:56px;right:10px;gap:3px;opacity:0.5}
+  .legend-item{font-size:6px}
+  .legend-dot{width:7px;height:7px}
+  .narration{width:96%;bottom:56px;max-width:none}
+  .narration-box{padding:12px 16px;border-radius:10px}
+  .narr-who{font-size:9px;letter-spacing:2px;margin-bottom:4px}
+  .narr-text{font-size:12px;line-height:1.5}
+  .narr-action{font-size:7px;padding:2px 8px;margin-top:6px}
+  .controls{height:48px;padding:0 10px;gap:8px}
+  .ctrl-btn{width:30px;height:30px;font-size:16px}
+  .timeline-time{font-size:9px;min-width:50px}
+  .scene-label{font-size:8px;min-width:80px;display:none}
+  .intro-sub{font-size:12px;letter-spacing:2px;margin-bottom:30px}
+  .intro-play{width:56px;height:56px;font-size:20px}
+  .intro-hint{font-size:8px}
+  .intro-date{font-size:9px;letter-spacing:4px}
+  .illust{top:auto;bottom:160px;left:14%;transform:translate(-50%,-50%) scale(0.65);transform-origin:center}
+  .illust.visible{transform:translate(-50%,-50%) scale(0.75)}
+  .illust-emoji{font-size:40px}
+  .illust-label{font-size:8px;letter-spacing:2px}
+}
+@media(max-width:400px){
+  .header-title{font-size:10px}
+  .header-time{font-size:16px}
+  .narr-text{font-size:11px}
+  .legend{display:none}
+}
 </style>
 </head>
 <body>
@@ -296,6 +334,27 @@ body{background:#000;color:#fff;font-family:'Helvetica Neue',Helvetica,Arial,san
 </div>
 
 <script>
+// Mobile scaling
+function scaleChurch(){
+  const vw = window.innerWidth;
+  if(vw <= 768){
+    const controlsH = 48, headerH = 50;
+    const availW = vw - 20;
+    const availH = window.innerHeight - controlsH - headerH;
+    const scale = Math.min(availW / 900, availH / 700);
+    document.documentElement.style.setProperty('--church-scale', scale.toFixed(3));
+    const church = document.querySelector('.church');
+    if(church) church.style.height = (700 * scale) + 'px';
+  } else {
+    document.documentElement.style.removeProperty('--church-scale');
+    const church = document.querySelector('.church');
+    if(church) church.style.height = '';
+  }
+}
+window.addEventListener('resize', scaleChurch);
+window.addEventListener('load', scaleChurch);
+scaleChurch();
+
 const $ = id => document.getElementById(id);
 const move = (id, x, y) => { const e=$(id); if(e){e.style.left=x+'px';e.style.top=y+'px'} };
 const show = id => { const e=$(id); if(e) e.classList.add('visible') };
