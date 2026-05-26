@@ -531,7 +531,7 @@ const scenes = [
       move('p-jp',CX-40,350); move('p-drew',CX-14,350); move('p-matt',CX+14,350); move('p-sterling',CX+40,350);
     },600);
     delay(()=>{
-      move('p-jp',320,160); move('p-drew',285,160); move('p-matt',250,160); move('p-sterling',215,160);
+      move('p-jp',580,160); move('p-drew',615,160); move('p-matt',650,160); move('p-sterling',685,160);
     },2800);
   }},
   // 11: Hannah processional — Erin, Beth, Emily C walk & position
@@ -547,8 +547,8 @@ const scenes = [
     },600);
     delay(()=>{
       // Beth sits, Erin & Emily C stand beside Hannah
-      seat('p-beth'); move('p-beth',640,405);
-      move('p-erin',620,160); move('p-emilyc',660,160);
+      seat('p-beth'); move('p-beth',260,405);
+      move('p-erin',280,160); move('p-emilyc',240,160);
     },2800);
   }},
   // 12: Guy & Kyle walk & sit
@@ -573,7 +573,7 @@ const scenes = [
       move('p-rachel',CX-15,350); move('p-debbie',CX+15,350);
     },600);
     delay(()=>{
-      move('p-rachel',580,160); // Rachel stands beside Hannah
+      move('p-rachel',320,160); // Rachel stands beside Hannah
       seat('p-debbie'); move('p-debbie',140,405); // Debbie sits
     },2800);
   }},
@@ -625,7 +625,7 @@ const scenes = [
   { time:'', phase:'READING', label:'Emily Cain — Eric Fromm', dur:7000, fn:()=>{
     unsetReading('p-drew'); unhl('p-drew');
     setSub('p-drew','');
-    move('p-drew',285,160); // Drew returns to groomsmen
+    move('p-drew',615,160); // Drew returns to groomsmen
     // Emily C walks to reading spot
     setReading('p-emilyc'); hl('p-emilyc');
     setSub('p-emilyc','Reading');
@@ -638,7 +638,7 @@ const scenes = [
   { time:'', phase:'WINE PRAYER', label:'Lucas — Wine Blessing', dur:5000, fn:()=>{
     unsetReading('p-emilyc'); unhl('p-emilyc');
     setSub('p-emilyc','');
-    move('p-emilyc',660,160); // Emily C returns to bridesmaids
+    move('p-emilyc',240,160); // Emily C returns to bridesmaids
     hl('p-lucas');
     narrate('WINE PRAYER','<strong>Lucas</strong> leads the wine prayer blessing.','BLESSING','ceremony');
     showIllust('ill-wine');
