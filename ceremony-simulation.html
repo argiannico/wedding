@@ -375,7 +375,6 @@ const scenes = [
     narrate('3:00 PM','<strong>Wedding party arrives</strong> at Resurrection Church, 350 Clinton Ave, Brooklyn.','ARRIVAL','walk');
     show('p-emily'); move('p-emily',160,75);
     show('p-james'); move('p-james',210,75);
-    show('p-steve'); move('p-steve',CX,45);
     show('p-lucas'); move('p-lucas',CX-50,45);
   }},
   // 1: Guests arrive & find seats — animated!
@@ -402,14 +401,13 @@ const scenes = [
   }},
   // 4: Chuppah explained
   { time:'4:05 PM', phase:'CHUPPAH', label:'Chuppah Explanation', dur:5000, fn:()=>{
-    unhl('p-lucas');
-    hl('p-steve');
-    narrate('4:05 PM','<strong>Steve</strong> explains the <strong>Chuppah</strong> tradition. Emily & James will play as the Chuppah holders carry it in.','CEREMONY','ceremony');
+    hl('p-lucas');
+    narrate('4:05 PM','<strong>Lucas</strong> explains the <strong>Chuppah</strong> tradition. Emily & James will play as the Chuppah holders carry it in.','CEREMONY','ceremony');
     showIllust('ill-chuppah');
   }},
   // 5: Chuppah holders carry it in
   { time:'4:05 PM', phase:'CHUPPAH ENTRANCE', label:'Huppah Carriers Walk In', dur:8000, fn:()=>{
-    unhl('p-steve');
+    unhl('p-lucas');
     hl('p-emily'); hl('p-james');
     narrate('CHUPPAH ENTRANCE','Emily & James play. <strong>Amandine, Julia, Lena & Jules</strong> carry the Chuppah down the aisle and position it at the altar.','CARRYING IN','walk');
     // All 4 holders appear at entrance together
@@ -474,7 +472,7 @@ const scenes = [
       move('p-jp',CX-40,350); move('p-drew',CX-14,350); move('p-matt',CX+14,350); move('p-sterling',CX+40,350);
     },600);
     delay(()=>{
-      move('p-jp',580,160); move('p-drew',615,160); move('p-matt',650,160); move('p-sterling',685,160);
+      move('p-jp',320,160); move('p-drew',285,160); move('p-matt',250,160); move('p-sterling',215,160);
     },2800);
   }},
   // 11: Hannah processional — Erin, Beth, Emily C walk & position
@@ -490,8 +488,8 @@ const scenes = [
     },600);
     delay(()=>{
       // Beth sits, Erin & Emily C stand beside Hannah
-      seat('p-beth'); move('p-beth',260,405);
-      move('p-erin',280,160); move('p-emilyc',240,160);
+      seat('p-beth'); move('p-beth',640,405);
+      move('p-erin',620,160); move('p-emilyc',660,160);
     },2800);
   }},
   // 12: Guy & Kyle walk & sit
@@ -516,7 +514,7 @@ const scenes = [
       move('p-rachel',CX-15,350); move('p-debbie',CX+15,350);
     },600);
     delay(()=>{
-      move('p-rachel',320,160); // Rachel stands beside Hannah
+      move('p-rachel',580,160); // Rachel stands beside Hannah
       seat('p-debbie'); move('p-debbie',140,405); // Debbie sits
     },2800);
   }},
@@ -524,15 +522,16 @@ const scenes = [
   { time:'4:30 PM', phase:'THE BRIDE', label:'Cliff, Hannah & Steve Enter', dur:7000, fn:()=>{
     flash();
     narrate('THE BRIDE ENTERS','<strong>Cliff, Hannah & Steve</strong> walk down the aisle. The bride enters with her fathers.','THE BRIDE','ceremony');
-    show('p-cliff'); show('p-hannah');
-    move('p-cliff',CX-30,650); move('p-hannah',CX,650);
-    delay(()=>{move('p-cliff',CX-30,420); move('p-hannah',CX,420)},800);
-    delay(()=>{move('p-cliff',CX-30,270); move('p-hannah',CX,270)},2500);
+    show('p-cliff'); show('p-hannah'); show('p-steve');
+    move('p-cliff',CX-30,650); move('p-hannah',CX,650); move('p-steve',CX+30,650);
+    delay(()=>{move('p-cliff',CX-30,420); move('p-hannah',CX,420); move('p-steve',CX+30,420)},800);
+    delay(()=>{move('p-cliff',CX-30,270); move('p-hannah',CX,270); move('p-steve',CX+30,270)},2500);
   }},
   // 15: Hannah under chuppah, Cliff sits
   { time:'4:30 PM', phase:'POSITIONS', label:'Hannah Under the Chuppah', dur:5000, fn:()=>{
     narrate('THE BRIDE','<strong>Hannah</strong> walks under the <strong>Chuppah</strong> to join Remy. <strong>Cliff</strong> takes his seat.','POSITIONS','stand');
     move('p-hannah',430,160);
+    move('p-steve',CX,45); // Steve takes officiant position at altar
     delay(()=>{ seat('p-cliff'); move('p-cliff',100,405); },600);
   }},
   // 16: Steve welcomes
@@ -567,7 +566,7 @@ const scenes = [
   { time:'', phase:'READING', label:'Emily Cain — Eric Fromm', dur:7000, fn:()=>{
     unsetReading('p-drew'); unhl('p-drew');
     setSub('p-drew','');
-    move('p-drew',615,160); // Drew returns to groomsmen
+    move('p-drew',285,160); // Drew returns to groomsmen
     // Emily C walks to reading spot
     setReading('p-emilyc'); hl('p-emilyc');
     setSub('p-emilyc','Reading');
@@ -580,7 +579,7 @@ const scenes = [
   { time:'', phase:'WINE PRAYER', label:'Lucas — Wine Blessing', dur:5000, fn:()=>{
     unsetReading('p-emilyc'); unhl('p-emilyc');
     setSub('p-emilyc','');
-    move('p-emilyc',240,160); // Emily C returns to bridesmaids
+    move('p-emilyc',660,160); // Emily C returns to bridesmaids
     hl('p-lucas');
     narrate('WINE PRAYER','<strong>Lucas</strong> leads the wine prayer blessing.','BLESSING','ceremony');
     showIllust('ill-wine');
