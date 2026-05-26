@@ -234,8 +234,8 @@ body{background:#000;color:#fff;font-family:'Helvetica Neue',Helvetica,Arial,san
           <div class="pew"></div><div class="pew"></div><div class="pew"></div><div class="pew"></div>
           <div class="pew"></div><div class="pew"></div><div class="pew"></div><div class="pew"></div>
         </div>
-        <div class="section-label label-left">Hannah's Family</div>
-        <div class="section-label label-right">Remy's Family</div>
+        <div class="section-label label-left">Remy's Family</div>
+        <div class="section-label label-right">Hannah's Family</div>
         <div class="section-label label-entrance">&#x25B2; ENTRANCE</div>
         <div class="chuppah" id="chuppah"><div class="chuppah-label">Chuppah</div></div>
       </div>
@@ -435,7 +435,7 @@ const scenes = [
   }},
   // 1: Guests arrive & find seats — animated!
   { time:'3:30 PM', phase:'GUESTS ARRIVE', label:'Guests Find Seats', dur:6000, fn:()=>{
-    narrate('3:30 PM','<strong>Guests arrive</strong> and find their seats.<br><strong>Hannah\'s family &rarr; Left pews</strong><br><strong>Remy\'s family &rarr; Right pews</strong>','SEATING','sit');
+    narrate('3:30 PM','<strong>Guests arrive</strong> and find their seats.<br><strong>Remy\'s family &rarr; Left pews</strong><br><strong>Hannah\'s family &rarr; Right pews</strong>','SEATING','sit');
     allGuests.forEach((g,i) => {
       delay(()=>{
         show(g.id);
@@ -497,9 +497,9 @@ const scenes = [
   { time:'4:15 PM', phase:'REMY\'S PROCESSIONAL', label:'Remy Under the Chuppah', dur:5000, fn:()=>{
     narrate('REMY\'S PROCESSIONAL','<strong>Remy</strong> walks under the <strong>Chuppah</strong>. <strong>Cindy</strong> takes her seat in the front row.','POSITIONS','stand');
     // Remy walks into chuppah (centered symmetrically with Hannah)
-    move('p-remy',470,160);
+    move('p-remy',430,160);
     // Cindy walks to her seat
-    delay(()=>{ seat('p-cindy'); move('p-cindy',610,405); },600);
+    delay(()=>{ seat('p-cindy'); move('p-cindy',290,405); },600);
   }},
   // 8: Alfonso, Maria, Stella walk — then sit
   { time:'4:15 PM', phase:'REMY\'S PROCESSIONAL', label:'Alfonso, Maria & Stella Walk', dur:5000, fn:()=>{
@@ -510,9 +510,9 @@ const scenes = [
       move('p-alfonso',CX-30,420); move('p-negra',CX,420); move('p-stella',CX+30,420);
     },600);
     delay(()=>{
-      seat('p-alfonso'); move('p-alfonso',570,405);
-      seat('p-negra'); move('p-negra',690,405);
-      seat('p-stella'); move('p-stella',650,405);
+      seat('p-alfonso'); move('p-alfonso',330,405);
+      seat('p-negra'); move('p-negra',210,405);
+      seat('p-stella'); move('p-stella',250,405);
     },2800);
   }},
   // 9: Remy's family settled
@@ -528,7 +528,7 @@ const scenes = [
       move('p-jp',CX-40,350); move('p-drew',CX-14,350); move('p-matt',CX+14,350); move('p-sterling',CX+40,350);
     },600);
     delay(()=>{
-      move('p-jp',580,160); move('p-drew',615,160); move('p-matt',650,160); move('p-sterling',685,160);
+      move('p-jp',320,160); move('p-drew',285,160); move('p-matt',250,160); move('p-sterling',215,160);
     },2800);
   }},
   // 11: Hannah processional — Erin, Beth, Emily C walk & position
@@ -544,8 +544,8 @@ const scenes = [
     },600);
     delay(()=>{
       // Beth sits, Erin & Emily C stand beside Hannah
-      seat('p-beth'); move('p-beth',260,405);
-      move('p-erin',280,160); move('p-emilyc',240,160);
+      seat('p-beth'); move('p-beth',640,405);
+      move('p-erin',620,160); move('p-emilyc',660,160);
     },2800);
   }},
   // 12: Guy & Kyle walk & sit
@@ -557,8 +557,8 @@ const scenes = [
       move('p-guy',CX-15,420); move('p-kyle',CX+15,420);
     },600);
     delay(()=>{
-      seat('p-guy'); move('p-guy',220,405);
-      seat('p-kyle'); move('p-kyle',180,405);
+      seat('p-guy'); move('p-guy',680,405);
+      seat('p-kyle'); move('p-kyle',720,405);
     },2800);
   }},
   // 13: Rachel & Debbie walk
@@ -570,8 +570,8 @@ const scenes = [
       move('p-rachel',CX-15,350); move('p-debbie',CX+15,350);
     },600);
     delay(()=>{
-      move('p-rachel',320,160); // Rachel stands beside Hannah
-      seat('p-debbie'); move('p-debbie',140,405); // Debbie sits
+      move('p-rachel',580,160); // Rachel stands beside Hannah
+      seat('p-debbie'); move('p-debbie',760,405); // Debbie sits
     },2800);
   }},
   // 14: THE BRIDE — Cliff & Hannah enter
@@ -586,9 +586,9 @@ const scenes = [
   // 15: Hannah under chuppah, Cliff sits
   { time:'4:30 PM', phase:'POSITIONS', label:'Hannah Under the Chuppah', dur:5000, fn:()=>{
     narrate('THE BRIDE','<strong>Hannah</strong> walks under the <strong>Chuppah</strong> to join Remy. <strong>Cliff</strong> takes his seat.','POSITIONS','stand');
-    move('p-hannah',430,160);
+    move('p-hannah',470,160);
     move('p-steve',CX,45); // Steve takes officiant position at altar
-    delay(()=>{ seat('p-cliff'); move('p-cliff',100,405); },600);
+    delay(()=>{ seat('p-cliff'); move('p-cliff',800,405); },600);
   }},
   // 16: Steve welcomes
   { time:'', phase:'THE SERVICE', label:'Steve — Welcome & Opening', dur:6000, fn:()=>{
@@ -622,7 +622,7 @@ const scenes = [
   { time:'', phase:'READING', label:'Emily Cain — Eric Fromm', dur:7000, fn:()=>{
     unsetReading('p-drew'); unhl('p-drew');
     setSub('p-drew','');
-    move('p-drew',615,160); // Drew returns to groomsmen
+    move('p-drew',285,160); // Drew returns to groomsmen
     // Emily C walks to reading spot
     setReading('p-emilyc'); hl('p-emilyc');
     setSub('p-emilyc','Reading');
@@ -635,7 +635,7 @@ const scenes = [
   { time:'', phase:'WINE PRAYER', label:'Lucas — Wine Blessing', dur:5000, fn:()=>{
     unsetReading('p-emilyc'); unhl('p-emilyc');
     setSub('p-emilyc','');
-    move('p-emilyc',240,160); // Emily C returns to bridesmaids
+    move('p-emilyc',660,160); // Emily C returns to bridesmaids
     hl('p-lucas');
     narrate('WINE PRAYER','<strong>Lucas</strong> leads the wine prayer blessing.','BLESSING','ceremony');
     showIllust('ill-wine');
@@ -663,8 +663,8 @@ const scenes = [
   // 24: Cindy/Maria return, Charge
   { time:'', phase:'CHARGE ON LOVE', label:'Steve — Charge on Love', dur:6000, fn:()=>{
     unhl('p-cindy'); unhl('p-negra');
-    seat('p-cindy'); move('p-cindy',610,405);
-    seat('p-negra'); move('p-negra',690,405);
+    seat('p-cindy'); move('p-cindy',290,405);
+    seat('p-negra'); move('p-negra',210,405);
     hl('p-steve');
     narrate('CHARGE ON LOVE','<strong>Steve McClelland</strong> gives a charge on love. He presents to all who have gathered — <strong>a brand new couple</strong>.','CHARGE','ceremony');
   }},
