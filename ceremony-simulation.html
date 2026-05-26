@@ -436,7 +436,8 @@ const scenes = [
     narrate('4:15 PM — REMY\'S PROCESSIONAL','Emily & James play. <strong>Remy walks with Mom (Cindy)</strong> down the aisle.','WALK','walk');
     show('p-remy'); show('p-cindy');
     move('p-remy',CX-20,650); move('p-cindy',CX+20,650);
-    delay(()=>{move('p-remy',CX-20,270); move('p-cindy',CX+20,270)},800);
+    delay(()=>{move('p-remy',CX-20,420); move('p-cindy',CX+20,420)},600);
+    delay(()=>{move('p-remy',CX-20,270); move('p-cindy',CX+20,270)},2500);
   }},
   // 7: Remy goes to chuppah, Cindy takes her seat
   { time:'4:15 PM', phase:'REMY\'S PROCESSIONAL', label:'Remy Under the Chuppah', dur:5000, fn:()=>{
@@ -452,10 +453,13 @@ const scenes = [
     show('p-alfonso'); show('p-negra'); show('p-stella');
     move('p-alfonso',CX-30,650); move('p-negra',CX,650); move('p-stella',CX+30,650);
     delay(()=>{
+      move('p-alfonso',CX-30,420); move('p-negra',CX,420); move('p-stella',CX+30,420);
+    },600);
+    delay(()=>{
       seat('p-alfonso'); move('p-alfonso',570,405);
       seat('p-negra'); move('p-negra',690,405);
       seat('p-stella'); move('p-stella',650,405);
-    },1200);
+    },2800);
   }},
   // 9: Remy's family settled
   { time:'4:15 PM', phase:'REMY\'S PROCESSIONAL', label:'Remy\'s Family Seated', dur:3000, fn:()=>{
@@ -467,8 +471,11 @@ const scenes = [
     show('p-jp'); show('p-drew'); show('p-matt'); show('p-sterling');
     move('p-jp',CX-40,650); move('p-drew',CX-14,650); move('p-matt',CX+14,650); move('p-sterling',CX+40,650);
     delay(()=>{
+      move('p-jp',CX-40,350); move('p-drew',CX-14,350); move('p-matt',CX+14,350); move('p-sterling',CX+40,350);
+    },600);
+    delay(()=>{
       move('p-jp',580,160); move('p-drew',615,160); move('p-matt',650,160); move('p-sterling',685,160);
-    },1200);
+    },2800);
   }},
   // 11: Hannah processional — Erin, Beth, Emily C walk & position
   { time:'4:30 PM', phase:'HANNAH\'S PROCESSIONAL', label:'Erin, Beth & Emily Walk', dur:6000, fn:()=>{
@@ -479,10 +486,13 @@ const scenes = [
     show('p-erin'); show('p-beth'); show('p-emilyc');
     move('p-erin',CX-25,650); move('p-beth',CX,650); move('p-emilyc',CX+25,650);
     delay(()=>{
+      move('p-erin',CX-25,350); move('p-beth',CX,350); move('p-emilyc',CX+25,350);
+    },600);
+    delay(()=>{
       // Beth sits, Erin & Emily C stand beside Hannah
       seat('p-beth'); move('p-beth',260,405);
       move('p-erin',280,160); move('p-emilyc',240,160);
-    },1500);
+    },2800);
   }},
   // 12: Guy & Kyle walk & sit
   { time:'4:30 PM', phase:'HANNAH\'S PROCESSIONAL', label:'Guy & Kyle Walk & Sit', dur:5000, fn:()=>{
@@ -490,9 +500,12 @@ const scenes = [
     show('p-guy'); show('p-kyle');
     move('p-guy',CX-15,650); move('p-kyle',CX+15,650);
     delay(()=>{
+      move('p-guy',CX-15,420); move('p-kyle',CX+15,420);
+    },600);
+    delay(()=>{
       seat('p-guy'); move('p-guy',220,405);
       seat('p-kyle'); move('p-kyle',180,405);
-    },1200);
+    },2800);
   }},
   // 13: Rachel & Debbie walk
   { time:'4:30 PM', phase:'HANNAH\'S PROCESSIONAL', label:'Rachel & Debbie Walk', dur:5000, fn:()=>{
@@ -500,9 +513,12 @@ const scenes = [
     show('p-rachel'); show('p-debbie');
     move('p-rachel',CX-15,650); move('p-debbie',CX+15,650);
     delay(()=>{
+      move('p-rachel',CX-15,350); move('p-debbie',CX+15,350);
+    },600);
+    delay(()=>{
       move('p-rachel',320,160); // Rachel stands beside Hannah
       seat('p-debbie'); move('p-debbie',140,405); // Debbie sits
-    },1200);
+    },2800);
   }},
   // 14: THE BRIDE — Cliff & Hannah enter
   { time:'4:30 PM', phase:'THE BRIDE', label:'Cliff, Hannah & Steve Enter', dur:7000, fn:()=>{
@@ -510,7 +526,8 @@ const scenes = [
     narrate('THE BRIDE ENTERS','<strong>Cliff, Hannah & Steve</strong> walk down the aisle. The bride enters with her fathers.','THE BRIDE','ceremony');
     show('p-cliff'); show('p-hannah');
     move('p-cliff',CX-30,650); move('p-hannah',CX,650);
-    delay(()=>{move('p-cliff',CX-30,270); move('p-hannah',CX,270)},1000);
+    delay(()=>{move('p-cliff',CX-30,420); move('p-hannah',CX,420)},800);
+    delay(()=>{move('p-cliff',CX-30,270); move('p-hannah',CX,270)},2500);
   }},
   // 15: Hannah under chuppah, Cliff sits
   { time:'4:30 PM', phase:'POSITIONS', label:'Hannah Under the Chuppah', dur:5000, fn:()=>{
