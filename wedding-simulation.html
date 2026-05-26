@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HANNAH + REMY: THE WEDDING QUEST</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #D4AF37;
+    --gold-light: #F5E6A3;
+    --dark: #0a0a0f;
+    --dark2: #141422;
+    --wine: #722F37;
+    --wine-light: #A0424D;
+    --holy: #E8D5B7;
+    --blue: #2A4A7F;
+    --green: #2D6B4F;
+    --hp-green: #4ADE80;
+    --mp-blue: #60A5FA;
+    --xp-purple: #A78BFA;
+  }
+
+  body {
+    background: var(--dark);
+    color: #e0d8c8;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ============ BOOT / TITLE SCREEN ============ */
+  #title-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1.5s ease;
+  }
+  #title-screen.fade-out { opacity: 0; pointer-events: none; }
+
+  .title-church {
+    position: absolute;
+    inset: 0;
+    background: url('') center/cover;
+    opacity: 0.15;
+    filter: sepia(0.5) brightness(0.4);
+  }
+
+  .title-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .pixel-cross {
+    font-size: 48px;
+    color: var(--gold);
+    margin-bottom: 20px;
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  @keyframes glow {
+    0%, 100% { text-shadow: 0 0 20px rgba(212,175,55,0.3); }
+    50% { text-shadow: 0 0 40px rgba(212,175,55,0.8), 0 0 80px rgba(212,175,55,0.3); }
+  }
+
+  .title-text {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 52px;
+    color: var(--gold);
+    letter-spacing: 6px;
+    text-shadow: 0 0 60px rgba(212,175,55,0.4);
+    margin-bottom: 8px;
+  }
+
+  .title-sub {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    color: var(--holy);
+    letter-spacing: 12px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    opacity: 0.8;
+  }
+
+  .title-level {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: var(--gold-light);
+    letter-spacing: 3px;
+    margin-bottom: 6px;
+    opacity: 0.7;
+  }
+
+  .title-location {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #888;
+    letter-spacing: 2px;
+    margin-bottom: 50px;
+  }
+
+  .start-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    background: transparent;
+    border: 2px solid var(--gold);
+    padding: 16px 40px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    animation: pulse-border 2s ease-in-out infinite;
+    transition: all 0.3s;
+  }
+  .start-btn:hover {
+    background: var(--gold);
+    color: #000;
+    transform: scale(1.05);
+  }
+
+  @keyframes pulse-border {
+    0%, 100% { border-color: var(--gold); box-shadow: 0 0 10px rgba(212,175,55,0.2); }
+    50% { border-color: var(--gold-light); box-shadow: 0 0 30px rgba(212,175,55,0.4); }
+  }
+
+  /* ============ GAME HUD ============ */
+  #game-hud {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 12px 20px;
+    background: linear-gradient(180deg, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.7) 80%, transparent 100%);
+    backdrop-filter: blur(8px);
+  }
+
+  .hud-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .hud-left { display: flex; align-items: center; gap: 16px; }
+  .hud-center { display: flex; align-items: center; gap: 12px; flex: 1; justify-content: center; }
+  .hud-right { display: flex; align-items: center; gap: 16px; }
+
+  .player-portrait {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    background: var(--dark2);
+  }
+
+  .player-info { display: flex; flex-direction: column; gap: 3px; }
+  .player-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--gold);
+  }
+  .player-class {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: #888;
+    letter-spacing: 1px;
+  }
+
+  .stat-bar {
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+  }
+  .stat-label { width: 20px; text-align: right; }
+  .stat-track {
+    width: 100px; height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .stat-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s ease;
+    position: relative;
+  }
+  .stat-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
+    border-radius: 4px 4px 0 0;
+  }
+  .hp .stat-label { color: var(--hp-green); }
+  .hp .stat-fill { background: linear-gradient(90deg, #22C55E, var(--hp-green)); }
+  .mp .stat-label { color: var(--mp-blue); }
+  .mp .stat-fill { background: linear-gradient(90deg, #3B82F6, var(--mp-blue)); }
+
+  .time-display {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    text-align: center;
+  }
+  .time-label {
+    font-size: 7px;
+    color: #666;
+    margin-bottom: 2px;
+  }
+
+  .level-badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* ============ MAIN GAME AREA ============ */
+  #game-world {
+    display: none;
+    padding-top: 80px;
+  }
+
+  /* Church Viewport */
+  .church-viewport {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 0;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border: 3px solid rgba(212,175,55,0.3);
+    border-radius: 8px;
+  }
+
+  .church-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7) saturate(1.2);
+  }
+
+  /* Objective Markers */
+  .marker {
+    position: absolute;
+    width: 30px; height: 30px;
+    transform: translate(-50%, -100%);
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s;
+  }
+  .marker:hover { transform: translate(-50%, -100%) scale(1.3); }
+
+  .marker-icon {
+    width: 30px; height: 38px;
+    display: flex; align-items: flex-start; justify-content: center;
+    position: relative;
+  }
+
+  .marker-diamond {
+    width: 24px; height: 24px;
+    transform: rotate(45deg);
+    border: 2px solid;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    animation: marker-bob 2s ease-in-out infinite;
+  }
+
+  .marker-diamond.quest { border-color: var(--gold); background: rgba(212,175,55,0.2); color: var(--gold); }
+  .marker-diamond.npc { border-color: var(--hp-green); background: rgba(74,222,128,0.2); color: var(--hp-green); }
+  .marker-diamond.item { border-color: var(--mp-blue); background: rgba(96,165,250,0.2); color: var(--mp-blue); }
+  .marker-diamond.boss { border-color: var(--wine-light); background: rgba(160,66,77,0.2); color: var(--wine-light); }
+
+  .marker-line {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 2px; height: 10px;
+    transform: translateX(-50%);
+  }
+  .marker-line.quest { background: var(--gold); }
+  .marker-line.npc { background: var(--hp-green); }
+  .marker-line.item { background: var(--mp-blue); }
+  .marker-line.boss { background: var(--wine-light); }
+
+  @keyframes marker-bob {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50% { transform: rotate(45deg) translateY(-6px); }
+  }
+
+  .marker-tooltip {
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10,10,15,0.95);
+    border: 1px solid rgba(212,175,55,0.4);
+    border-radius: 6px;
+    padding: 8px 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    font-size: 11px;
+    color: var(--holy);
+  }
+  .marker:hover .marker-tooltip { opacity: 1; }
+  .marker-tooltip .tt-type {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--gold);
+    margin-bottom: 3px;
+  }
+
+  /* Scan Line Effect */
+  .church-viewport::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* Corner Frame */
+  .corner-frame {
+    position: absolute;
+    width: 30px; height: 30px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.5;
+  }
+  .corner-frame.tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+  .corner-frame.tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+  .corner-frame.bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+  .corner-frame.br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+  /* Location Tag */
+  .location-tag {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    text-align: center;
+  }
+  .loc-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--gold);
+    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+    letter-spacing: 4px;
+  }
+  .loc-addr {
+    font-size: 11px;
+    color: rgba(232,213,183,0.6);
+    letter-spacing: 2px;
+    margin-top: 2px;
+  }
+
+  /* ============ QUEST LOG / TIMELINE ============ */
+  .quest-log {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+  }
+
+  /* Side Panel */
+  .side-panel {
+    position: sticky;
+    top: 90px;
+    height: fit-content;
+  }
+
+  .panel-section {
+    background: rgba(20,20,34,0.8);
+    border: 1px solid rgba(212,175,55,0.15);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .panel-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(212,175,55,0.15);
+  }
+
+  /* Party Members */
+  .party-member {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    opacity: 0.5;
+    transition: all 0.5s;
+  }
+  .party-member.active { opacity: 1; }
+
+  .pm-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 2px solid #333;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    background: var(--dark);
+    transition: border-color 0.5s;
+    flex-shrink: 0;
+  }
+  .party-member.active .pm-avatar { border-color: var(--gold); }
+
+  .pm-info { flex: 1; min-width: 0; }
+  .pm-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: #ccc;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pm-role {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 6px;
+    color: #666;
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  /* Inventory */
+  .inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .inv-slot {
+    aspect-ratio: 1;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s;
+  }
+  .inv-slot:hover {
+    border-color: var(--gold);
+    background: rgba(212,175,55,0.1);
+  }
+  .inv-slot .inv-tip {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10,10,15,0.95);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 9px;
+    color: var(--holy);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 50;
+  }
+  .inv-slot:hover .inv-tip { opacity: 1; }
+  .inv-rarity {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 6px;
+    margin-bottom: 2px;
+  }
+  .inv-rarity.legendary { color: #FF8000; }
+  .inv-rarity.epic { color: #A335EE; }
+  .inv-rarity.rare { color: #0070DD; }
+
+  /* ============ MAIN TIMELINE ============ */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg,
+      var(--gold) 0%,
+      rgba(212,175,55,0.3) 30%,
+      rgba(212,175,55,0.1) 70%,
+      transparent 100%
+    );
+  }
+
+  .quest-phase {
+    position: relative;
+    margin-bottom: 40px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease;
+  }
+  .quest-phase.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .phase-node {
+    position: absolute;
+    left: -40px;
+    top: 4px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    z-index: 5;
+    transition: all 0.5s;
+  }
+
+  .phase-node.pending {
+    background: var(--dark2);
+    border: 2px solid #333;
+  }
+  .phase-node.active {
+    background: rgba(212,175,55,0.2);
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 20px rgba(212,175,55,0.3);
+    animation: node-pulse 2s ease-in-out infinite;
+  }
+  .phase-node.complete {
+    background: rgba(45,107,79,0.3);
+    border: 2px solid var(--hp-green);
+  }
+
+  @keyframes node-pulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(212,175,55,0.2); }
+    50% { box-shadow: 0 0 25px rgba(212,175,55,0.5); }
+  }
+
+  .phase-card {
+    background: rgba(20,20,34,0.6);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.5s;
+  }
+  .quest-phase.active-phase .phase-card {
+    border-color: rgba(212,175,55,0.3);
+    background: rgba(20,20,34,0.8);
+    box-shadow: 0 4px 30px rgba(212,175,55,0.1);
+  }
+
+  .phase-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  .phase-time {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--gold);
+    margin-bottom: 4px;
+    letter-spacing: 1px;
+  }
+
+  .phase-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #e0d8c8;
+    letter-spacing: 1px;
+  }
+
+  .phase-status {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .phase-status.locked { color: #666; border: 1px solid #333; }
+  .phase-status.active { color: var(--gold); border: 1px solid var(--gold); animation: pulse-border 2s infinite; }
+  .phase-status.complete { color: var(--hp-green); border: 1px solid rgba(74,222,128,0.3); }
+
+  .phase-body {
+    padding: 0 20px 20px;
+    display: none;
+  }
+  .quest-phase.active-phase .phase-body { display: block; }
+
+  .phase-desc {
+    font-size: 13px;
+    color: #999;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  /* Objectives */
+  .objectives {
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .obj-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .obj-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+    font-size: 12px;
+    color: #aaa;
+  }
+  .obj-check {
+    width: 16px; height: 16px;
+    border: 1.5px solid #444;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .obj-item.done .obj-check {
+    border-color: var(--hp-green);
+    color: var(--hp-green);
+    background: rgba(74,222,128,0.1);
+  }
+  .obj-item.done { color: #666; text-decoration: line-through; }
+
+  /* Speaker Cards */
+  .speaker-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .speaker-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 6px;
+    padding: 8px 10px;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .speaker-card:hover {
+    border-color: rgba(212,175,55,0.3);
+    background: rgba(212,175,55,0.05);
+  }
+  .speaker-emoji {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .speaker-info { min-width: 0; }
+  .speaker-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #ccc;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .speaker-rel {
+    font-size: 9px;
+    color: #777;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Food Items */
+  .food-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .food-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.15);
+    border-radius: 6px;
+    border-left: 3px solid transparent;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .food-item:hover {
+    border-left-color: var(--gold);
+    background: rgba(212,175,55,0.05);
+  }
+  .food-emoji { font-size: 18px; flex-shrink: 0; }
+  .food-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #ccc;
+  }
+  .food-desc {
+    font-size: 10px;
+    color: #777;
+    margin-top: 1px;
+  }
+
+  /* XP Reward */
+  .xp-reward {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--xp-purple);
+    background: rgba(167,139,250,0.1);
+    border: 1px solid rgba(167,139,250,0.2);
+    border-radius: 4px;
+    padding: 4px 10px;
+    margin-top: 12px;
+  }
+
+  /* Achievement Pop */
+  .achievement-pop {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: rgba(10,10,15,0.95);
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    padding: 16px 20px;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transform: translateX(120%);
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 8px 32px rgba(212,175,55,0.2);
+  }
+  .achievement-pop.show { transform: translateX(0); }
+  .ach-icon { font-size: 32px; }
+  .ach-text {}
+  .ach-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .ach-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #fff;
+  }
+
+  /* ============ PROGRESS BAR (Bottom) ============ */
+  #progress-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 10px 20px 14px;
+    background: linear-gradient(0deg, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.7) 80%, transparent 100%);
+    backdrop-filter: blur(8px);
+  }
+
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .prog-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+  .prog-current { color: var(--gold); }
+  .prog-total { color: #555; }
+
+  .progress-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 3px;
+    transition: width 1s ease;
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2px;
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--gold);
+  }
+
+  .progress-milestones {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    padding: 0 2px;
+  }
+  .milestone {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 6px;
+    color: #444;
+    text-align: center;
+    transition: color 0.5s;
+    cursor: pointer;
+  }
+  .milestone.reached { color: var(--gold); }
+  .milestone:hover { color: var(--holy); }
+
+  /* ============ DIALOG BOX ============ */
+  .dialog-box {
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 700px;
+    background: rgba(10,10,15,0.95);
+    border: 2px solid rgba(212,175,55,0.4);
+    border-radius: 12px;
+    padding: 20px 24px;
+    z-index: 150;
+    display: none;
+  }
+  .dialog-box.show { display: block; animation: dialog-in 0.4s ease; }
+
+  @keyframes dialog-in {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  .dialog-speaker {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .dialog-text {
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.6;
+  }
+  .dialog-continue {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: #555;
+    text-align: right;
+    margin-top: 10px;
+    animation: blink 1.2s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .dialog-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: #555;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .dialog-close:hover { color: var(--gold); }
+
+  /* ============ MINI MAP ============ */
+  .minimap {
+    width: 100%;
+    aspect-ratio: 1;
+    background: rgba(0,0,0,0.4);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .minimap-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(212,175,55,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,175,55,0.05) 1px, transparent 1px);
+    background-size: 20% 20%;
+  }
+  .minimap-dot {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .minimap-dot.player {
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+    animation: player-dot 1.5s ease-in-out infinite;
+    z-index: 5;
+  }
+  @keyframes player-dot {
+    0%, 100% { box-shadow: 0 0 6px var(--gold); }
+    50% { box-shadow: 0 0 14px var(--gold); }
+  }
+  .minimap-dot.npc { background: var(--hp-green); width: 5px; height: 5px; }
+  .minimap-dot.obj { background: var(--mp-blue); width: 5px; height: 5px; }
+
+  .minimap-labels {
+    position: absolute;
+    inset: 0;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .minimap-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 5px;
+    color: rgba(212,175,55,0.4);
+    letter-spacing: 1px;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .quest-log {
+      grid-template-columns: 1fr;
+    }
+    .side-panel {
+      position: relative;
+      top: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .panel-section { margin-bottom: 0; }
+    .title-text { font-size: 32px; }
+    .speaker-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ============ TRANSITION OVERLAY ============ */
+  .level-transition {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s;
+  }
+  .level-transition.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .lt-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+  }
+  .lt-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 36px;
+    color: #fff;
+    letter-spacing: 6px;
+  }
+</style>
+</head>
+<body>
+
+<!-- TITLE SCREEN -->
+<div id="title-screen">
+  <div class="title-church" id="title-bg"></div>
+  <div class="title-content">
+    <div class="pixel-cross">&#x271E;</div>
+    <div class="title-text">HANNAH &amp; REMY</div>
+    <div class="title-sub">The Wedding Quest</div>
+    <div class="title-level">LEVEL I &mdash; THE CEREMONY</div>
+    <div class="title-location">Resurrection Church &bull; 350 Clinton Ave &bull; Brooklyn</div>
+    <button class="start-btn" onclick="startGame()">PRESS START</button>
+  </div>
+</div>
+
+<!-- LEVEL TRANSITION -->
+<div class="level-transition" id="level-transition">
+  <div class="lt-text">ENTERING AREA</div>
+  <div class="lt-name">RESURRECTION CHURCH</div>
+</div>
+
+<!-- GAME HUD -->
+<div id="game-hud">
+  <div class="hud-row">
+    <div class="hud-left">
+      <div class="player-portrait">&#x1F470;</div>
+      <div class="player-info">
+        <div class="player-name">Hannah &amp; Remy</div>
+        <div class="player-class">LVL 1 NEWLYWEDS</div>
+        <div class="stat-bar hp">
+          <span class="stat-label">HP</span>
+          <div class="stat-track"><div class="stat-fill" id="hp-bar" style="width:100%"></div></div>
+        </div>
+        <div class="stat-bar mp">
+          <span class="stat-label">MP</span>
+          <div class="stat-track"><div class="stat-fill" id="mp-bar" style="width:100%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="hud-center">
+      <div class="time-display">
+        <div class="time-label">CEREMONY TIME</div>
+        <span id="hud-time">3:30 PM</span>
+      </div>
+    </div>
+    <div class="hud-right">
+      <div class="level-badge" id="quest-counter">QUEST 0/8</div>
+    </div>
+  </div>
+</div>
+
+<!-- ACHIEVEMENT POP -->
+<div class="achievement-pop" id="achievement">
+  <div class="ach-icon" id="ach-icon">&#x1F3C6;</div>
+  <div class="ach-text">
+    <div class="ach-label">ACHIEVEMENT UNLOCKED</div>
+    <div class="ach-name" id="ach-name">The Adventure Begins</div>
+  </div>
+</div>
+
+<!-- DIALOG BOX -->
+<div class="dialog-box" id="dialog">
+  <button class="dialog-close" onclick="closeDialog()">&times;</button>
+  <div class="dialog-speaker" id="dialog-speaker">Pastor</div>
+  <div class="dialog-text" id="dialog-text">Welcome to Resurrection Church. The ceremony is about to begin...</div>
+  <div class="dialog-continue">&#x25BC; CLICK TO CONTINUE</div>
+</div>
+
+<!-- GAME WORLD -->
+<div id="game-world">
+
+  <!-- Church Viewport -->
+  <div class="church-viewport" id="church-viewport">
+    <div class="church-bg" style="width:100%;height:100%;background: linear-gradient(180deg, #1a1520 0%, #1e1828 20%, #2a2035 40%, #252040 60%, #1a1a2e 80%, #12121e 100%); position:relative;">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%, rgba(212,175,55,0.15) 0%, transparent 60%);"></div>
+      <div style="position:absolute;top:15%;left:42%;width:16%;height:35%;background:linear-gradient(180deg, rgba(212,175,55,0.08) 0%, rgba(180,140,40,0.05) 100%);border-radius:50% 50% 0 0;"></div>
+      <div style="position:absolute;bottom:10%;left:20%;right:20%;height:25%;border:1px solid rgba(212,175,55,0.08);border-radius:50% 50% 0 0;background:rgba(30,20,40,0.4);"></div>
+      <div style="position:absolute;top:20%;left:45%;width:2px;height:20%;background:rgba(212,175,55,0.15);"></div>
+      <div style="position:absolute;top:20%;left:48%;width:2px;height:18%;background:rgba(212,175,55,0.12);"></div>
+      <div style="position:absolute;top:20%;left:51%;width:2px;height:20%;background:rgba(212,175,55,0.15);"></div>
+      <div style="position:absolute;top:20%;left:54%;width:2px;height:16%;background:rgba(212,175,55,0.10);"></div>
+      <div style="position:absolute;top:25%;left:15%;width:8%;height:30%;background:linear-gradient(180deg, rgba(160,66,77,0.1) 0%, rgba(42,74,127,0.1) 50%, rgba(45,107,79,0.1) 100%);border-radius:40% 40% 0 0;"></div>
+      <div style="position:absolute;top:25%;right:15%;width:8%;height:30%;background:linear-gradient(180deg, rgba(42,74,127,0.1) 0%, rgba(160,66,77,0.1) 50%, rgba(212,175,55,0.08) 100%);border-radius:40% 40% 0 0;"></div>
+      <div style="position:absolute;top:55%;left:30%;width:6px;height:6px;border-radius:50%;background:rgba(245,230,163,0.3);box-shadow:0 0 20px rgba(245,230,163,0.2);"></div>
+      <div style="position:absolute;top:55%;right:30%;width:6px;height:6px;border-radius:50%;background:rgba(245,230,163,0.3);box-shadow:0 0 20px rgba(245,230,163,0.2);"></div>
+    </div>
+
+    <div class="corner-frame tl"></div>
+    <div class="corner-frame tr"></div>
+    <div class="corner-frame bl"></div>
+    <div class="corner-frame br"></div>
+
+    <div class="location-tag">
+      <div class="loc-name">RESURRECTION CHURCH</div>
+      <div class="loc-addr">350 Clinton Ave &bull; Brooklyn, NY 11238</div>
+    </div>
+
+    <!-- Interactive Markers -->
+    <div class="marker" style="left:50%; top:65%;" onclick="showDialog('The Altar', 'The sacred space where Hannah and Remy will exchange vows. The organ pipes tower above like a cathedral from a forgotten realm. +500 XP upon completion of the Vow Exchange quest.')">
+      <div class="marker-icon">
+        <div class="marker-diamond quest">&#x2726;</div>
+        <div class="marker-line quest"></div>
+      </div>
+      <div class="marker-tooltip">
+        <div class="tt-type">MAIN QUEST</div>
+        The Altar &mdash; Vow Exchange
+      </div>
+    </div>
+
+    <div class="marker" style="left:28%; top:55%;" onclick="showDialog('The Murals', 'Ancient wall art depicting the community in celebration. These murals have witnessed countless unions. They seem to shimmer with a holy blessing... +50 XP Discovery Bonus.')">
+      <div class="marker-icon">
+        <div class="marker-diamond item">&#x2605;</div>
+        <div class="marker-line item"></div>
+      </div>
+      <div class="marker-tooltip">
+        <div class="tt-type">DISCOVERY</div>
+        Sacred Murals &mdash; Lore Item
+      </div>
+    </div>
+
+    <div class="marker" style="left:72%; top:50%;" onclick="showDialog('Stained Glass Window', 'Light filters through ancient stained glass, casting prismatic rays across the nave. A passive buff: +20% Emotional Resonance to all party members in range.')">
+      <div class="marker-icon">
+        <div class="marker-diamond item">&#x2736;</div>
+        <div class="marker-line item"></div>
+      </div>
+      <div class="marker-tooltip">
+        <div class="tt-type">BUFF ZONE</div>
+        Stained Glass &mdash; Holy Light
+      </div>
+    </div>
+
+    <div class="marker" style="left:38%; top:78%;" onclick="showDialog('MC Alban', 'Your trusted companion and Master of Ceremonies. Alban will guide the party through each phase. Class: Bard. Special ability: Rally the Crowd. Currently holding the wireless mic &mdash; a legendary item.')">
+      <div class="marker-icon">
+        <div class="marker-diamond npc">!</div>
+        <div class="marker-line npc"></div>
+      </div>
+      <div class="marker-tooltip">
+        <div class="tt-type">NPC &mdash; BARD</div>
+        Alban &mdash; Master of Ceremonies
+      </div>
+    </div>
+
+    <div class="marker" style="left:62%; top:78%;" onclick="showDialog('DJ Rayo', 'The legendary DJ waits in the shadows, turntables ready. His power will be unleashed in Level 2: The Reception. Class: Soundweaver. Equipment: 2 Vinyl Turntables, 1 Mixer, 1 Wireless Mic.')">
+      <div class="marker-icon">
+        <div class="marker-diamond npc">&#x266B;</div>
+        <div class="marker-line npc"></div>
+      </div>
+      <div class="marker-tooltip">
+        <div class="tt-type">NPC &mdash; SOUNDWEAVER</div>
+        DJ Rayo &mdash; Locked until Lvl 2
+      </div>
+    </div>
+
+    <div class="marker" style="left:50%; top:40%;" onclick="showDialog('The Organ', 'A massive pipe organ crowns the altar space. Its thunderous voice will herald the arrival of the bride. Boss mechanic: When the organ plays, all guests must rise. Failure to comply results in -100 Social Standing.')">
+      <div class="marker-icon">
+        <div class="marker-diamond boss">&#x2694;</div>
+        <div class="marker-line boss"></div>
+      </div>
+      <div class="marker-tooltip">
+        <div class="tt-type">BOSS MECHANIC</div>
+        The Organ &mdash; Herald of the Bride
+      </div>
+    </div>
+  </div>
+
+  <!-- Quest Log + Timeline -->
+  <div class="quest-log">
+
+    <!-- Side Panel -->
+    <div class="side-panel">
+
+      <!-- Mini Map -->
+      <div class="panel-section">
+        <div class="panel-title">AREA MAP</div>
+        <div class="minimap">
+          <div class="minimap-grid"></div>
+          <div class="minimap-dot player" style="left:50%; top:35%"></div>
+          <div class="minimap-dot npc" style="left:30%; top:60%"></div>
+          <div class="minimap-dot npc" style="left:70%; top:60%"></div>
+          <div class="minimap-dot npc" style="left:50%; top:70%"></div>
+          <div class="minimap-dot obj" style="left:50%; top:25%"></div>
+          <div class="minimap-dot obj" style="left:20%; top:40%"></div>
+          <div class="minimap-dot obj" style="left:80%; top:40%"></div>
+          <div class="minimap-labels">
+            <div class="minimap-label" style="text-align:center">ORGAN</div>
+            <div class="minimap-label" style="text-align:center; margin-top:auto">ENTRANCE</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Party -->
+      <div class="panel-section">
+        <div class="panel-title">WEDDING PARTY</div>
+        <div class="party-member active">
+          <div class="pm-avatar">&#x1F470;</div>
+          <div class="pm-info"><div class="pm-name">Hannah</div><div class="pm-role">BRIDE &bull; LVL 99</div></div>
+        </div>
+        <div class="party-member active">
+          <div class="pm-avatar">&#x1F935;</div>
+          <div class="pm-info"><div class="pm-name">Remy</div><div class="pm-role">GROOM &bull; LVL 99</div></div>
+        </div>
+        <div class="party-member active">
+          <div class="pm-avatar">&#x1F476;</div>
+          <div class="pm-info"><div class="pm-name">Mika</div><div class="pm-role">VIP &bull; LVL MAX</div></div>
+        </div>
+        <div class="party-member">
+          <div class="pm-avatar">&#x1F3B6;</div>
+          <div class="pm-info"><div class="pm-name">Alban</div><div class="pm-role">BARD &bull; MC</div></div>
+        </div>
+        <div class="party-member">
+          <div class="pm-avatar">&#x1F3B5;</div>
+          <div class="pm-info"><div class="pm-name">DJ Rayo</div><div class="pm-role">SOUNDWEAVER</div></div>
+        </div>
+      </div>
+
+      <!-- Inventory -->
+      <div class="panel-section">
+        <div class="panel-title">INVENTORY</div>
+        <div class="inventory-grid">
+          <div class="inv-slot">&#x1F48D;
+            <div class="inv-tip"><div class="inv-rarity legendary">LEGENDARY</div>Wedding Rings x2</div>
+          </div>
+          <div class="inv-slot">&#x1F399;
+            <div class="inv-tip"><div class="inv-rarity epic">EPIC</div>Wireless Mic</div>
+          </div>
+          <div class="inv-slot">&#x1F3B6;
+            <div class="inv-tip"><div class="inv-rarity epic">EPIC</div>Vinyl Turntables x2</div>
+          </div>
+          <div class="inv-slot">&#x1F370;
+            <div class="inv-tip"><div class="inv-rarity rare">RARE</div>Wedding Cake</div>
+          </div>
+          <div class="inv-slot">&#x1F37E;
+            <div class="inv-tip"><div class="inv-rarity epic">EPIC</div>Champagne Supply</div>
+          </div>
+          <div class="inv-slot">&#x1F4D6;
+            <div class="inv-tip"><div class="inv-rarity legendary">LEGENDARY</div>The Vows</div>
+          </div>
+          <div class="inv-slot">&#x1F4F8;
+            <div class="inv-tip"><div class="inv-rarity rare">RARE</div>Camera</div>
+          </div>
+          <div class="inv-slot">&#x1F355;
+            <div class="inv-tip"><div class="inv-rarity rare">RARE</div>Balera Pizza (Afterparty)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Timeline -->
+    <div class="timeline" id="timeline">
+
+      <!-- Phase 1: Load-In -->
+      <div class="quest-phase" data-phase="0">
+        <div class="phase-node pending">&#x1F4E6;</div>
+        <div class="phase-card">
+          <div class="phase-header" onclick="togglePhase(0)">
+            <div>
+              <div class="phase-time">12:00 PM &ndash; 3:00 PM</div>
+              <div class="phase-name">Equipment Load-In</div>
+            </div>
+            <div class="phase-status locked">PREP PHASE</div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-desc">Soundhouse delivery arrives at LaRina. The stage is being set for what lies ahead. Your allies prepare the battlefield.</div>
+            <div class="objectives">
+              <div class="obj-title">OBJECTIVES</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Soundhouse delivers equipment to LaRina</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>DJ monitor + wireless mic secured</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>2 vinyl turntables + mixer positioned</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Power extension cord + strip connected</div>
+            </div>
+            <div class="xp-reward">&#x2B50; +200 XP &mdash; PREPARATION COMPLETE</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 2: The Ceremony -->
+      <div class="quest-phase" data-phase="1">
+        <div class="phase-node pending">&#x26EA;</div>
+        <div class="phase-card">
+          <div class="phase-header" onclick="togglePhase(1)">
+            <div>
+              <div class="phase-time">3:30 PM &ndash; 5:00 PM</div>
+              <div class="phase-name">The Sacred Ceremony</div>
+            </div>
+            <div class="phase-status locked">MAIN QUEST</div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-desc">The main event. Enter Resurrection Church. The organ thunders. Guests rise. Hannah walks the aisle. Vows are exchanged under the watchful murals. This is the boss fight of love itself.</div>
+            <div class="objectives">
+              <div class="obj-title">OBJECTIVES</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Enter Resurrection Church</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Survive the organ processional (stand when prompted!)</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Exchange the vows (use Legendary Vows from inventory)</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Ring exchange (equip Legendary Wedding Rings x2)</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>The Kiss &mdash; seal the covenant</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Recessional &mdash; exit as newlyweds</div>
+            </div>
+            <div class="xp-reward">&#x2B50; +5000 XP &mdash; ACHIEVEMENT: BOUND FOR ETERNITY</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 3: Reception Arrival -->
+      <div class="quest-phase" data-phase="2">
+        <div class="phase-node pending">&#x1F37E;</div>
+        <div class="phase-card">
+          <div class="phase-header" onclick="togglePhase(2)">
+            <div>
+              <div class="phase-time">5:00 PM</div>
+              <div class="phase-name">Reception Kick-off at LaRina</div>
+            </div>
+            <div class="phase-status locked">LEVEL 2</div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-desc">Fast travel to LaRina. The party begins. Champagne flows as an expedited option for those who can't wait for the bar. Alban calls everyone to gather at 5:30.</div>
+            <div class="objectives">
+              <div class="obj-title">OBJECTIVES</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Travel from Church to LaRina</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Champagne distributed to guests</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Alban rallies the crowd (5:30 PM)</div>
+            </div>
+            <div class="xp-reward">&#x2B50; +300 XP &mdash; AREA UNLOCKED: LARINA</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 4: Speeches Round 1 -->
+      <div class="quest-phase" data-phase="3">
+        <div class="phase-node pending">&#x1F3A4;</div>
+        <div class="phase-card">
+          <div class="phase-header" onclick="togglePhase(3)">
+            <div>
+              <div class="phase-time">6:00 PM &ndash; 6:45 PM</div>
+              <div class="phase-name">Speeches &amp; MC &mdash; Round I</div>
+            </div>
+            <div class="phase-status locked">MULTI-BOSS</div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-desc">Alban leads the program. Eight speakers take the stage. Each one a boss with their own emotional attack pattern. Hold pasta service during this phase!</div>
+            <div class="speaker-grid">
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F468;&#x200D;&#x1F9B3;</div><div class="speaker-info"><div class="speaker-name">Cliff</div><div class="speaker-rel">Hannah's Stepdad</div></div></div>
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F469;</div><div class="speaker-info"><div class="speaker-name">Cindy</div><div class="speaker-rel">Remy's Mom</div></div></div>
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F469;&#x200D;&#x1F9B0;</div><div class="speaker-info"><div class="speaker-name">Debbie</div><div class="speaker-rel">Hannah's Mom</div></div></div>
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F468;&#x200D;&#x1F9B3;</div><div class="speaker-info"><div class="speaker-name">Alfonso &amp; Negra</div><div class="speaker-rel">Remy's Dad &amp; Grandmother</div></div></div>
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F469;&#x200D;&#x1F9B0;</div><div class="speaker-info"><div class="speaker-name">Beth</div><div class="speaker-rel">Hannah's Stepmom</div></div></div>
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F468;</div><div class="speaker-info"><div class="speaker-name">Steve</div><div class="speaker-rel">Hannah's Dad</div></div></div>
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F466;</div><div class="speaker-info"><div class="speaker-name">Sterling</div><div class="speaker-rel">Remy's Younger Brother</div></div></div>
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F469;</div><div class="speaker-info"><div class="speaker-name">Rachel</div><div class="speaker-rel">Hannah's Twin Sister</div></div></div>
+            </div>
+            <div class="xp-reward">&#x2B50; +800 XP &mdash; SURVIVED THE SPEECHES I</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 5: The Feast -->
+      <div class="quest-phase" data-phase="4">
+        <div class="phase-node pending">&#x1F372;</div>
+        <div class="phase-card">
+          <div class="phase-header" onclick="togglePhase(4)">
+            <div>
+              <div class="phase-time">ONGOING</div>
+              <div class="phase-name">The Grand Feast of LaRina</div>
+            </div>
+            <div class="phase-status locked">SIDE QUEST</div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-desc">An Italian feast of legendary proportions. Each dish is a consumable with unique buffs. Service coordinated around the 15 speakers.</div>
+            <div class="food-grid">
+              <div class="food-item"><div class="food-emoji">&#x1F363;</div><div><div class="food-name">Tartare di Tonno</div><div class="food-desc">Little gem lettuce &amp; chili oil &bull; +15 STR</div></div></div>
+              <div class="food-item"><div class="food-emoji">&#x1F956;</div><div><div class="food-name">Burro e Acciughe</div><div class="food-desc">Brioche, whipped butter, Cantabrian anchovies &bull; +20 CHA</div></div></div>
+              <div class="food-item"><div class="food-emoji">&#x1F345;</div><div><div class="food-name">Insalata Caprese</div><div class="food-desc">Buffalo mozzarella, heirloom tomatoes, basil &bull; +10 HP regen</div></div></div>
+              <div class="food-item"><div class="food-emoji">&#x1F96C;</div><div><div class="food-name">Verdure Gratinate</div><div class="food-desc">Tomatoes, bell peppers, zucchini gratin &bull; +12 DEF</div></div></div>
+              <div class="food-item"><div class="food-emoji">&#x1F35F;</div><div><div class="food-name">Crocchette</div><div class="food-desc">Potato, spinach, fontina, basil mayo &bull; +8 LCK</div></div></div>
+              <div class="food-item"><div class="food-emoji">&#x1F32E;</div><div><div class="food-name">Stazione della Piadina</div><div class="food-desc">Piadina with prosciutto, mortadella, cheese &bull; +25 STA</div></div></div>
+              <div class="food-item"><div class="food-emoji">&#x1F990;</div><div><div class="food-name">Fritto Misto</div><div class="food-desc">Mixed seafood, shellfish, vegetables &bull; +18 AGI</div></div></div>
+              <div class="food-item"><div class="food-emoji">&#x1F969;</div><div><div class="food-name">Focaccina e Vitello Tonnato</div><div class="food-desc">Focaccia, slow-cooked veal, tuna, capers &bull; +30 ATK</div></div></div>
+              <div class="food-item"><div class="food-emoji">&#x1F356;</div><div><div class="food-name">Arrosticini</div><div class="food-desc">Grilled sheep skewers &bull; +22 STR</div></div></div>
+            </div>
+            <div style="margin-top:16px; font-family:'Cinzel',serif; font-weight:700; font-size:15px; color:var(--gold);">Primi</div>
+            <div class="food-grid" style="margin-top:8px;">
+              <div class="food-item"><div class="food-emoji">&#x1F35D;</div><div><div class="food-name">Agnolotti del Plin</div><div class="food-desc">Braised beef &amp; chicken, black lime, sage &bull; +40 HP</div></div></div>
+              <div class="food-item"><div class="food-emoji">&#x1F95F;</div><div><div class="food-name">Tortelli all'Ortica</div><div class="food-desc">Ricotta, spinach, Pecorino di Fossa &bull; +35 MP</div></div></div>
+            </div>
+            <div class="xp-reward">&#x2B50; +1200 XP &mdash; LEGENDARY FEAST CONSUMED</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 6: Cake + Speeches 2 -->
+      <div class="quest-phase" data-phase="5">
+        <div class="phase-node pending">&#x1F370;</div>
+        <div class="phase-card">
+          <div class="phase-header" onclick="togglePhase(5)">
+            <div>
+              <div class="phase-time">8:00 PM &ndash; 9:00 PM</div>
+              <div class="phase-name">Cake Cutting &amp; Final Speeches</div>
+            </div>
+            <div class="phase-status locked">BOSS PHASE</div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-desc">Alban announces the cake cutting. A feature moment for Mika, Remy, and Hannah. Then the final wave of speakers descends. Dolci comes out AFTER dancing starts, not with the cake.</div>
+            <div class="speaker-grid">
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F469;&#x200D;&#x1F9B0;</div><div class="speaker-info"><div class="speaker-name">Erin</div><div class="speaker-rel">Hannah's Older Sister</div></div></div>
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F468;</div><div class="speaker-info"><div class="speaker-name">Matt</div><div class="speaker-rel">Remy's Childhood Best Friend</div></div></div>
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F469;</div><div class="speaker-info"><div class="speaker-name">Julia</div><div class="speaker-rel">Hannah's College Best Friend</div></div></div>
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F469;</div><div class="speaker-info"><div class="speaker-name">Amandine</div><div class="speaker-rel">Hannah's College Best Friend</div></div></div>
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F468;</div><div class="speaker-info"><div class="speaker-name">JP</div><div class="speaker-rel">Remy's Best Friend (Adulthood)</div></div></div>
+              <div class="speaker-card"><div class="speaker-emoji">&#x1F469;</div><div class="speaker-info"><div class="speaker-name">Laura</div><div class="speaker-rel">Hannah &amp; Remy's Best Friend</div></div></div>
+            </div>
+            <div style="margin-top:16px; font-family:'Cinzel',serif; font-weight:700; font-size:15px; color:var(--gold);">Dolci</div>
+            <div class="food-grid" style="margin-top:8px;">
+              <div class="food-item"><div class="food-emoji">&#x1F36E;</div><div><div class="food-name">Tiramisu</div><div class="food-desc">Mascarpone, ladyfingers, coffee &bull; +50 MP</div></div></div>
+              <div class="food-item"><div class="food-emoji">&#x1F95B;</div><div><div class="food-name">Panna Cotta</div><div class="food-desc">Vanilla, Volume Primo vermouth, roasted hazelnuts &bull; +40 CHA</div></div></div>
+              <div class="food-item"><div class="food-emoji">&#x1F351;</div><div><div class="food-name">Sorbetto di Frutta</div><div class="food-desc">Peach sorbet, basil, Crudo EVOO &bull; +30 AGI</div></div></div>
+            </div>
+            <div class="xp-reward">&#x2B50; +1500 XP &mdash; TEARS OF JOY SURVIVED</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 7: Dance Floor -->
+      <div class="quest-phase" data-phase="6">
+        <div class="phase-node pending">&#x1F483;</div>
+        <div class="phase-card">
+          <div class="phase-header" onclick="togglePhase(6)">
+            <div>
+              <div class="phase-time">9:00 PM &ndash; 12:30 AM</div>
+              <div class="phase-name">The Dance Floor Awakens</div>
+            </div>
+            <div class="phase-status locked">RAID MODE</div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-desc">DJ Rayo is finally unleashed. The turntables spin. Hannah and Remy take the first dance. Then: chaos. Beautiful, rhythmic chaos. Last call at 12:30 AM.</div>
+            <div class="objectives">
+              <div class="obj-title">OBJECTIVES</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Hannah &amp; Remy first dance</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>DJ Rayo activates the turntables</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Survive the dance floor until 12:30 AM</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Last call &mdash; secure final drinks</div>
+            </div>
+            <div class="xp-reward">&#x2B50; +2000 XP &mdash; DANCE LORD ACHIEVEMENT</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 8: Afterparty -->
+      <div class="quest-phase" data-phase="7">
+        <div class="phase-node pending">&#x1F355;</div>
+        <div class="phase-card">
+          <div class="phase-header" onclick="togglePhase(7)">
+            <div>
+              <div class="phase-time">1:00 AM &ndash; ???</div>
+              <div class="phase-name">The Afterparty &mdash; Secret Level</div>
+            </div>
+            <div class="phase-status locked">SECRET</div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-desc">A hidden level unlocked only by true warriors who survived the main campaign. Location: 804 Bergen Street, Apt 4F. Balera pizza delivery inbound. Liquid Death, beer, and wine until the sun rises.</div>
+            <div class="objectives">
+              <div class="obj-title">OBJECTIVES</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Fast travel to 804 Bergen St, Apt 4F</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Intercept Balera pizza delivery</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Liquid Death + Beer + Wine until late</div>
+              <div class="obj-item" onclick="toggleObj(this)"><div class="obj-check"></div>Survive until dawn</div>
+            </div>
+            <div class="xp-reward">&#x2B50; +9999 XP &mdash; LEGENDARY: WEDDING COMPLETE</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar">
+  <div class="progress-labels">
+    <span class="prog-label prog-current" id="prog-text">CEREMONY START</span>
+    <span class="prog-label prog-total">THE END</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+  </div>
+  <div class="progress-milestones">
+    <div class="milestone reached" data-phase="0" onclick="jumpTo(0)">LOAD-IN</div>
+    <div class="milestone" data-phase="1" onclick="jumpTo(1)">CEREMONY</div>
+    <div class="milestone" data-phase="2" onclick="jumpTo(2)">RECEPTION</div>
+    <div class="milestone" data-phase="3" onclick="jumpTo(3)">SPEECHES</div>
+    <div class="milestone" data-phase="4" onclick="jumpTo(4)">FEAST</div>
+    <div class="milestone" data-phase="5" onclick="jumpTo(5)">CAKE</div>
+    <div class="milestone" data-phase="6" onclick="jumpTo(6)">DANCE</div>
+    <div class="milestone" data-phase="7" onclick="jumpTo(7)">AFTER</div>
+  </div>
+</div>
+
+<script>
+  let currentPhase = -1;
+  let completedQuests = 0;
+  const totalQuests = 8;
+  const times = ['12:00 PM','3:30 PM','5:00 PM','6:00 PM','7:00 PM','8:00 PM','9:00 PM','1:00 AM'];
+
+  function startGame() {
+    const titleScreen = document.getElementById('title-screen');
+    const transition = document.getElementById('level-transition');
+
+    titleScreen.classList.add('fade-out');
+
+    setTimeout(() => {
+      titleScreen.style.display = 'none';
+      transition.classList.add('active');
+    }, 1500);
+
+    setTimeout(() => {
+      transition.classList.remove('active');
+      document.getElementById('game-hud').style.display = 'block';
+      document.getElementById('game-world').style.display = 'block';
+      document.getElementById('progress-bar').style.display = 'block';
+      advancePhase();
+      showAchievement('&#x1F3C6;', 'The Adventure Begins');
+
+      // Animate quest phases in
+      const phases = document.querySelectorAll('.quest-phase');
+      phases.forEach((p, i) => {
+        setTimeout(() => p.classList.add('visible'), 200 * i);
+      });
+    }, 3500);
+  }
+
+  function advancePhase() {
+    if (currentPhase >= 0) {
+      const prev = document.querySelector(`[data-phase="${currentPhase}"]`);
+      prev.classList.remove('active-phase');
+      prev.querySelector('.phase-node').className = 'phase-node complete';
+      prev.querySelector('.phase-status').className = 'phase-status complete';
+      prev.querySelector('.phase-status').textContent = 'COMPLETE';
+    }
+
+    currentPhase++;
+    if (currentPhase >= totalQuests) return;
+
+    const curr = document.querySelector(`[data-phase="${currentPhase}"]`);
+    curr.classList.add('active-phase');
+    curr.querySelector('.phase-node').className = 'phase-node active';
+    curr.querySelector('.phase-status').className = 'phase-status active';
+    curr.querySelector('.phase-status').textContent = 'ACTIVE';
+
+    // Update HUD
+    document.getElementById('hud-time').textContent = times[currentPhase];
+    completedQuests = currentPhase;
+    document.getElementById('quest-counter').textContent = `QUEST ${completedQuests}/${totalQuests}`;
+
+    // Update progress
+    const pct = (currentPhase / (totalQuests - 1)) * 100;
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('prog-text').textContent = curr.querySelector('.phase-name').textContent.toUpperCase();
+
+    // Update milestones
+    document.querySelectorAll('.milestone').forEach((m, i) => {
+      if (i <= currentPhase) m.classList.add('reached');
+    });
+
+    // Scroll to phase
+    setTimeout(() => {
+      curr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  }
+
+  function togglePhase(phase) {
+    const el = document.querySelector(`[data-phase="${phase}"]`);
+    el.classList.toggle('active-phase');
+  }
+
+  function jumpTo(phase) {
+    while (currentPhase < phase) {
+      advancePhase();
+    }
+  }
+
+  function toggleObj(el) {
+    el.classList.toggle('done');
+    const check = el.querySelector('.obj-check');
+    check.innerHTML = el.classList.contains('done') ? '&#x2714;' : '';
+
+    // Check if all objectives in this section are done
+    const parent = el.closest('.objectives');
+    const items = parent.querySelectorAll('.obj-item');
+    const doneItems = parent.querySelectorAll('.obj-item.done');
+    if (items.length === doneItems.length) {
+      setTimeout(() => advancePhase(), 800);
+    }
+  }
+
+  function showDialog(speaker, text) {
+    document.getElementById('dialog-speaker').textContent = speaker;
+    document.getElementById('dialog-text').textContent = text;
+    document.getElementById('dialog').classList.add('show');
+  }
+
+  function closeDialog() {
+    document.getElementById('dialog').classList.remove('show');
+  }
+
+  document.getElementById('dialog').addEventListener('click', function(e) {
+    if (e.target === this || e.target.classList.contains('dialog-text') || e.target.classList.contains('dialog-continue')) {
+      closeDialog();
+    }
+  });
+
+  function showAchievement(icon, name) {
+    const ach = document.getElementById('achievement');
+    document.getElementById('ach-icon').innerHTML = icon;
+    document.getElementById('ach-name').textContent = name;
+    ach.classList.add('show');
+    setTimeout(() => ach.classList.remove('show'), 4000);
+  }
+
+  // Keyboard controls
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDialog();
+    if (e.key === ' ' || e.key === 'Enter') {
+      if (document.getElementById('dialog').classList.contains('show')) {
+        closeDialog();
+      }
+    }
+  });
+
+  // HP/MP drain for fun
+  setInterval(() => {
+    const hp = document.getElementById('hp-bar');
+    const mp = document.getElementById('mp-bar');
+    const hpVal = Math.max(30, 100 - (currentPhase * 8) + Math.random() * 10);
+    const mpVal = Math.max(20, 100 - (currentPhase * 10) + Math.random() * 15);
+    hp.style.width = hpVal + '%';
+    mp.style.width = mpVal + '%';
+  }, 3000);
+</script>
+
+</body>
+</html>

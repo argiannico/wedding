@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hannah & Remy — Wedding Rehearsal Run of Show</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #F5F0E8;
+    --cream2: #EDE7DB;
+    --gold: #C9A84C;
+    --gold-dark: #9E7B2F;
+    --charcoal: #2C2C2C;
+    --soft-black: #1A1A1A;
+    --warm-gray: #8C8477;
+    --light-gray: #D4CFC5;
+    --sage: #7A8B6F;
+    --dusty-rose: #C4A08A;
+    --wine: #7A3B3E;
+    --blue-gray: #6B7B8D;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ============ CONTROLS BAR ============ */
+  .controls {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: rgba(26,26,26,0.95);
+    backdrop-filter: blur(12px);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .ctrl-btn {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+  .ctrl-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .ctrl-btn.active { background: var(--gold); border-color: var(--gold); color: #000; }
+
+  .progress-wrap { flex: 1; display: flex; align-items: center; gap: 12px; }
+  .progress-track {
+    flex: 1; height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    position: relative;
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    right: -5px; top: -3px;
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(201,168,76,0.5);
+  }
+  .progress-time {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+    min-width: 90px;
+    text-align: right;
+  }
+  .slide-counter {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    white-space: nowrap;
+  }
+
+  /* ============ SLIDES CONTAINER ============ */
+  .slides-container {
+    width: 100%;
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* ============ SLIDE BASE ============ */
+  .slide {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 40px;
+  }
+
+  /* ============ TITLE SLIDE ============ */
+  .slide-title {
+    background: var(--soft-black);
+    color: var(--cream);
+  }
+  .title-date {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 30px;
+  }
+  .title-names {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: clamp(48px, 8vw, 90px);
+    letter-spacing: 8px;
+    text-align: center;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .title-amp {
+    font-weight: 400;
+    color: var(--gold);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .title-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--light-gray);
+    letter-spacing: 4px;
+    margin-bottom: 50px;
+  }
+  .title-details {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 2px;
+  }
+  .title-details .sep { color: var(--gold); }
+  .title-line {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 30px auto;
+  }
+  .title-instruction {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    margin-top: 40px;
+  }
+
+  /* ============ SECTION HEADER SLIDES ============ */
+  .slide-section {
+    background: var(--soft-black);
+    color: var(--cream);
+    text-align: center;
+  }
+  .section-time {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 5px;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: clamp(32px, 5vw, 56px);
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+  }
+  .section-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--light-gray);
+    max-width: 500px;
+  }
+  .section-icon {
+    font-size: 48px;
+    margin-bottom: 24px;
+    opacity: 0.8;
+  }
+
+  /* ============ INSTRUCTION SLIDES ============ */
+  .slide-instruction {
+    background: var(--cream);
+    text-align: center;
+    padding: 80px 40px;
+  }
+  .slide-instruction.alt { background: var(--cream2); }
+  .slide-instruction.dark {
+    background: var(--soft-black);
+    color: var(--cream);
+  }
+
+  .inst-time {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 5px;
+    color: var(--gold-dark);
+    margin-bottom: 8px;
+  }
+  .dark .inst-time { color: var(--gold); }
+
+  .inst-heading {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: clamp(24px, 4vw, 40px);
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    color: var(--charcoal);
+  }
+  .dark .inst-heading { color: var(--cream); }
+
+  .inst-body {
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.8;
+    color: var(--warm-gray);
+  }
+  .dark .inst-body { color: var(--light-gray); }
+
+  .inst-highlight {
+    color: var(--charcoal);
+    font-weight: 600;
+  }
+  .dark .inst-highlight { color: #fff; }
+
+  /* ============ STAGE DIAGRAM ============ */
+  .stage-diagram {
+    width: 100%;
+    max-width: 800px;
+    margin: 40px auto 0;
+    position: relative;
+  }
+
+  .church-illustration {
+    width: 100%;
+    background: var(--cream2);
+    border-radius: 16px;
+    padding: 40px;
+    position: relative;
+    border: 1px solid var(--light-gray);
+  }
+  .dark .church-illustration {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.1);
+  }
+
+  .church-top {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--light-gray);
+  }
+  .dark .church-top { border-bottom-color: rgba(255,255,255,0.1); }
+
+  .church-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+    margin-bottom: 8px;
+  }
+  .dark .church-label { color: rgba(255,255,255,0.4); }
+
+  .church-altar {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--gold-dark);
+    letter-spacing: 4px;
+  }
+  .dark .church-altar { color: var(--gold); }
+
+  .stage-sides {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 30px;
+    align-items: start;
+  }
+
+  .stage-side {
+    text-align: center;
+  }
+
+  .side-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    display: inline-block;
+  }
+  .side-left .side-label {
+    background: rgba(196,160,138,0.15);
+    color: var(--dusty-rose);
+  }
+  .side-right .side-label {
+    background: rgba(122,139,111,0.15);
+    color: var(--sage);
+  }
+
+  .stage-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  .center-icon {
+    font-size: 32px;
+    margin-bottom: 4px;
+  }
+  .center-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--warm-gray);
+  }
+
+  .person-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .person-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 8px;
+    transition: all 0.3s;
+  }
+  .dark .person-item { background: rgba(255,255,255,0.06); }
+
+  .person-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .person-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--charcoal);
+    text-align: left;
+  }
+  .dark .person-name { color: var(--cream); }
+
+  .person-role {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: var(--warm-gray);
+    text-align: left;
+  }
+  .dark .person-role { color: rgba(255,255,255,0.4); }
+
+  .person-info { flex: 1; min-width: 0; }
+
+  /* ============ PROCESSIONAL / WALKTHROUGH ============ */
+  .walk-group {
+    max-width: 600px;
+    margin: 30px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .walk-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: all 0.3s;
+  }
+  .dark .walk-item {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.08);
+  }
+
+  .walk-number {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .walk-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--charcoal);
+    line-height: 1.5;
+  }
+  .dark .walk-text { color: var(--cream); }
+
+  .walk-detail {
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--warm-gray);
+    margin-top: 2px;
+  }
+
+  .walk-action {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .action-walk { background: rgba(122,139,111,0.15); color: var(--sage); }
+  .action-sit { background: rgba(107,123,141,0.15); color: var(--blue-gray); }
+  .action-stand { background: rgba(201,168,76,0.15); color: var(--gold-dark); }
+
+  /* ============ SEATING CHART ============ */
+  .seating-row {
+    max-width: 500px;
+    margin: 24px auto 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .seat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.05);
+    min-width: 70px;
+  }
+  .dark .seat {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.08);
+  }
+
+  .seat-emoji { font-size: 22px; }
+  .seat-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--charcoal);
+  }
+  .dark .seat-name { color: var(--cream); }
+  .seat-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 8px;
+    color: var(--warm-gray);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ============ READING / QUOTE BLOCKS ============ */
+  .reading-block {
+    max-width: 600px;
+    margin: 30px auto 0;
+    padding: 30px 36px;
+    background: rgba(255,255,255,0.4);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.9;
+    color: var(--charcoal);
+  }
+  .dark .reading-block {
+    background: rgba(255,255,255,0.04);
+    color: var(--cream);
+  }
+
+  .reading-attr {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--gold-dark);
+    margin-top: 16px;
+    text-transform: uppercase;
+  }
+  .dark .reading-attr { color: var(--gold); }
+
+  /* ============ KEY MOMENT CALLOUT ============ */
+  .key-moment {
+    max-width: 500px;
+    margin: 30px auto 0;
+    padding: 20px 24px;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .dark .key-moment {
+    background: rgba(201,168,76,0.06);
+    border-color: rgba(201,168,76,0.15);
+  }
+  .km-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+  .km-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--charcoal);
+  }
+  .dark .km-text { color: var(--cream); }
+
+  /* ============ DIVIDER ============ */
+  .slide-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 30px auto;
+  }
+  .dark .slide-divider { background: var(--gold); }
+
+  /* ============ ARROW INDICATOR ============ */
+  .arrow-down {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 40px;
+    opacity: 0.4;
+  }
+  .arrow-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .arrow-icon {
+    font-size: 20px;
+    animation: bounce-down 2s ease-in-out infinite;
+  }
+  @keyframes bounce-down {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 768px) {
+    .slide { padding: 60px 24px; }
+    .stage-sides { grid-template-columns: 1fr; gap: 20px; }
+    .stage-center { order: -1; }
+    .seating-row { gap: 6px; }
+    .seat { min-width: 60px; padding: 8px 8px; }
+    .controls { padding: 8px 16px; }
+  }
+
+  /* ============ SCROLL ANIMATIONS ============ */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .fade-in.delay-1 { transition-delay: 0.15s; }
+  .fade-in.delay-2 { transition-delay: 0.3s; }
+  .fade-in.delay-3 { transition-delay: 0.45s; }
+  .fade-in.delay-4 { transition-delay: 0.6s; }
+</style>
+</head>
+<body>
+
+<div class="slides-container" id="slides-container">
+
+<!-- ===================== SLIDE 1: TITLE ===================== -->
+<div class="slide slide-title" id="slide-0">
+  <div class="title-date fade-in">Saturday, June 13th</div>
+  <div class="title-names fade-in delay-1">HANNAH <span class="title-amp">&</span> REMY</div>
+  <div class="title-sub fade-in delay-2">Wedding Ceremony Run of Show</div>
+  <div class="title-line fade-in delay-2"></div>
+  <div class="title-details fade-in delay-3">
+    <span>Resurrection Church</span>
+    <span class="sep">&#x2022;</span>
+    <span>350 Clinton Ave</span>
+    <span class="sep">&#x2022;</span>
+    <span>Brooklyn, NY 11238</span>
+  </div>
+  <div class="arrow-down fade-in delay-4">
+    <div class="arrow-label">Scroll to begin</div>
+    <div class="arrow-icon">&#x2193;</div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 2: CAST ===================== -->
+<div class="slide slide-section" id="slide-1">
+  <div class="section-icon fade-in">&#x1F3B6;</div>
+  <div class="section-time fade-in delay-1">THE CEREMONY TEAM</div>
+  <div class="section-title fade-in delay-2">Key Players</div>
+</div>
+
+<div class="slide slide-instruction" id="slide-2">
+  <div class="inst-heading fade-in">Officiant &amp; Musicians</div>
+  <div class="walk-group">
+    <div class="walk-item fade-in delay-1">
+      <div class="walk-number" style="background:var(--wine)">&#x271E;</div>
+      <div>
+        <div class="walk-text">Steve McClelland</div>
+        <div class="walk-detail">Officiant &mdash; leads the entire ceremony</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-1">
+      <div class="walk-number" style="background:var(--wine)">&#x271E;</div>
+      <div>
+        <div class="walk-text">Lucas</div>
+        <div class="walk-detail">Opening statement &amp; wine prayer</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-2">
+      <div class="walk-number" style="background:var(--sage)">&#x1F3BB;</div>
+      <div>
+        <div class="walk-text">Emily</div>
+        <div class="walk-detail">Violin</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-3">
+      <div class="walk-number" style="background:var(--blue-gray)">&#x1F3B5;</div>
+      <div>
+        <div class="walk-text">James</div>
+        <div class="walk-detail">Instruments</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 3: LAYOUT ===================== -->
+<div class="slide slide-section" id="slide-3">
+  <div class="section-icon fade-in">&#x26EA;</div>
+  <div class="section-time fade-in delay-1">CHURCH LAYOUT</div>
+  <div class="section-title fade-in delay-2">Know Your Side</div>
+  <div class="section-subtitle fade-in delay-3">When facing the altar</div>
+</div>
+
+<div class="slide slide-instruction dark" id="slide-4">
+  <div class="inst-heading fade-in">Seating Arrangement</div>
+  <div class="stage-diagram fade-in delay-1">
+    <div class="church-illustration">
+      <div class="church-top">
+        <div class="church-label">Altar &bull; Organ &bull; Murals</div>
+        <div class="church-altar">&#x271E; FRONT OF CHURCH</div>
+      </div>
+      <div class="stage-sides">
+        <div class="stage-side side-left">
+          <div class="side-label">STAGE LEFT</div>
+          <div style="font-family:'Cinzel',serif; font-weight:700; font-size:20px; color:var(--dusty-rose); margin-bottom:12px;">Hannah's Family</div>
+          <div style="font-size:14px; color:rgba(255,255,255,0.5); font-family:'Inter',sans-serif;">Guests sit on this side</div>
+        </div>
+        <div class="stage-center">
+          <div class="center-icon">&#x1F6B6;</div>
+          <div class="center-label">AISLE</div>
+        </div>
+        <div class="stage-side side-right">
+          <div class="side-label">STAGE RIGHT</div>
+          <div style="font-family:'Cinzel',serif; font-weight:700; font-size:20px; color:var(--sage); margin-bottom:12px;">Remy's Family</div>
+          <div style="font-size:14px; color:rgba(255,255,255,0.5); font-family:'Inter',sans-serif;">Guests sit on this side</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="key-moment fade-in delay-2">
+    <div class="km-icon">&#x1F4A1;</div>
+    <div class="km-text">When facing the altar from the entrance: Hannah's family is on the LEFT, Remy's family is on the RIGHT.</div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 4: 3:00 PM ===================== -->
+<div class="slide slide-section" id="slide-5">
+  <div class="section-time fade-in">3:00 PM</div>
+  <div class="section-title fade-in delay-1">Wedding Party Arrives</div>
+  <div class="section-subtitle fade-in delay-2">Arrive at Resurrection Church for service</div>
+</div>
+
+<!-- ===================== SLIDE 5: 3:30 PM ===================== -->
+<div class="slide slide-section" id="slide-6">
+  <div class="section-time fade-in">3:30 PM</div>
+  <div class="section-title fade-in delay-1">Guests Arrive</div>
+  <div class="section-subtitle fade-in delay-2">Doors open. Guests find their seats.<br>Hannah's family stage left. Remy's family stage right.</div>
+</div>
+
+<!-- ===================== SLIDE 6: 3:45 PM ===================== -->
+<div class="slide slide-instruction alt" id="slide-7">
+  <div class="inst-time fade-in">3:45 PM</div>
+  <div class="inst-heading fade-in delay-1">Opening Music</div>
+  <div class="slide-divider fade-in delay-1"></div>
+  <div class="inst-body fade-in delay-2">
+    <span class="inst-highlight">Emily (violin) &amp; James (instruments)</span> play the opening song, settling the audience and creating the atmosphere for the ceremony.
+  </div>
+  <div class="key-moment fade-in delay-3">
+    <div class="km-icon">&#x1F3B6;</div>
+    <div class="km-text">Music sets the tone. Guests should be settling into their seats. Ushers help latecomers.</div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 7: 4:00 PM ===================== -->
+<div class="slide slide-instruction" id="slide-8">
+  <div class="inst-time fade-in">4:00 PM</div>
+  <div class="inst-heading fade-in delay-1">Lucas &mdash; Opening Statement</div>
+  <div class="slide-divider fade-in delay-1"></div>
+  <div class="inst-body fade-in delay-2">
+    Lucas takes the front and delivers the <span class="inst-highlight">opening statement</span> to welcome everyone and set the spiritual tone.
+  </div>
+</div>
+
+<!-- ===================== SLIDE 8: 4:05 PM CHUPPAH ===================== -->
+<div class="slide slide-instruction dark" id="slide-9">
+  <div class="inst-time fade-in">4:05 PM</div>
+  <div class="inst-heading fade-in delay-1">The Chuppah</div>
+  <div class="slide-divider fade-in delay-1"></div>
+  <div class="inst-body fade-in delay-2">
+    The <span class="inst-highlight">Chuppah</span> is explained to the congregation, followed by Emily &amp; James playing a song as the Chuppah holders and friends enter.
+  </div>
+  <div class="walk-group">
+    <div class="walk-item fade-in delay-2">
+      <div class="walk-number">1</div>
+      <div>
+        <div class="walk-text">Amandine</div>
+        <div class="walk-detail">Walks in carrying the Chuppah</div>
+      </div>
+      <div class="walk-action action-walk">WALK IN</div>
+    </div>
+    <div class="walk-item fade-in delay-2">
+      <div class="walk-number">2</div>
+      <div>
+        <div class="walk-text">Julia</div>
+        <div class="walk-detail">Walks in carrying the Chuppah</div>
+      </div>
+      <div class="walk-action action-walk">WALK IN</div>
+    </div>
+    <div class="walk-item fade-in delay-3">
+      <div class="walk-number">3</div>
+      <div>
+        <div class="walk-text">Lena</div>
+        <div class="walk-detail">Walks in carrying the Chuppah</div>
+      </div>
+      <div class="walk-action action-walk">WALK IN</div>
+    </div>
+    <div class="walk-item fade-in delay-3">
+      <div class="walk-number">4</div>
+      <div>
+        <div class="walk-text">Jules</div>
+        <div class="walk-detail">Walks in carrying the Chuppah</div>
+      </div>
+      <div class="walk-action action-walk">WALK IN</div>
+    </div>
+  </div>
+  <div class="key-moment fade-in delay-4">
+    <div class="km-icon">&#x2728;</div>
+    <div class="km-text">Chuppah holders walk in together and position the canopy at the altar. Stay in position throughout the ceremony.</div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 9: 4:15 PM REMY'S PROCESSIONAL ===================== -->
+<div class="slide slide-section" id="slide-10">
+  <div class="section-icon fade-in">&#x1F935;</div>
+  <div class="section-time fade-in delay-1">4:15 PM</div>
+  <div class="section-title fade-in delay-1">Remy's Processional</div>
+  <div class="section-subtitle fade-in delay-2">Emily &amp; James play as Remy and his family walk down the aisle</div>
+</div>
+
+<div class="slide slide-instruction alt" id="slide-11">
+  <div class="inst-time fade-in">4:15 PM</div>
+  <div class="inst-heading fade-in delay-1">Walking Order &mdash; Remy's Side</div>
+  <div class="slide-divider fade-in delay-1"></div>
+  <div class="walk-group">
+    <div class="walk-item fade-in delay-1">
+      <div class="walk-number">1</div>
+      <div>
+        <div class="walk-text">Remy with Mom (Cindy)</div>
+        <div class="walk-detail">Walk down the aisle together</div>
+      </div>
+      <div class="walk-action action-walk">WALK</div>
+    </div>
+    <div class="walk-item fade-in delay-2">
+      <div class="walk-number">2</div>
+      <div>
+        <div class="walk-text">Alfonso, Negra &amp; Stella</div>
+        <div class="walk-detail">Walk down the aisle together</div>
+      </div>
+      <div class="walk-action action-walk">WALK</div>
+    </div>
+    <div class="walk-item fade-in delay-3">
+      <div class="walk-number">3</div>
+      <div>
+        <div class="walk-text">JP, Drew, Matt &amp; Sterling</div>
+        <div class="walk-detail">Walk down the aisle together</div>
+      </div>
+      <div class="walk-action action-walk">WALK</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide slide-instruction" id="slide-12">
+  <div class="inst-heading fade-in">After the Walk &mdash; Remy's Side</div>
+  <div class="slide-divider fade-in"></div>
+  <div class="inst-body fade-in delay-1" style="margin-bottom:30px;">
+    Once at the front, family and groomsmen split:
+  </div>
+  <div class="walk-group">
+    <div class="walk-item fade-in delay-2">
+      <div class="walk-number" style="background:var(--blue-gray)">&#x1FA91;</div>
+      <div>
+        <div class="walk-text">Alfonso, Cindy, Stella &amp; Maria</div>
+        <div class="walk-detail">Take their seats in the first row</div>
+      </div>
+      <div class="walk-action action-sit">SIT</div>
+    </div>
+    <div class="walk-item fade-in delay-3">
+      <div class="walk-number" style="background:var(--gold)">&#x1F9CD;</div>
+      <div>
+        <div class="walk-text">JP, Drew, Matt &amp; Sterling</div>
+        <div class="walk-detail">Stand next to Remy at the altar</div>
+      </div>
+      <div class="walk-action action-stand">STAND</div>
+    </div>
+  </div>
+
+  <div style="margin-top:40px;" class="fade-in delay-3">
+    <div class="church-label">REMY'S FIRST ROW (Left to Right)</div>
+    <div class="seating-row">
+      <div class="seat"><div class="seat-emoji">&#x1F475;</div><div class="seat-name">Maria</div><div class="seat-label">Grandmother</div></div>
+      <div class="seat"><div class="seat-emoji">&#x1F468;</div><div class="seat-name">Alfonso</div><div class="seat-label">Father</div></div>
+      <div class="seat"><div class="seat-emoji">&#x1F469;</div><div class="seat-name">Cindy</div><div class="seat-label">Mother</div></div>
+      <div class="seat"><div class="seat-emoji">&#x1F467;</div><div class="seat-name">Stella</div><div class="seat-label">Family</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 10: 4:30 PM HANNAH'S PROCESSIONAL ===================== -->
+<div class="slide slide-section" id="slide-13">
+  <div class="section-icon fade-in">&#x1F470;</div>
+  <div class="section-time fade-in delay-1">4:30 PM</div>
+  <div class="section-title fade-in delay-1">Hannah's Processional</div>
+  <div class="section-subtitle fade-in delay-2">Emily &amp; James play as Hannah and her family walk down the aisle</div>
+</div>
+
+<div class="slide slide-instruction dark" id="slide-14">
+  <div class="inst-time fade-in">4:30 PM</div>
+  <div class="inst-heading fade-in delay-1">Walking Order &mdash; Hannah's Side</div>
+  <div class="slide-divider fade-in delay-1"></div>
+  <div class="walk-group">
+    <div class="walk-item fade-in delay-1">
+      <div class="walk-number">1</div>
+      <div>
+        <div class="walk-text">Erin, Beth &amp; Emily</div>
+        <div class="walk-detail">Walk down the aisle together</div>
+      </div>
+      <div class="walk-action action-walk">WALK</div>
+    </div>
+    <div class="walk-item fade-in delay-2">
+      <div class="walk-number">2</div>
+      <div>
+        <div class="walk-text">Guy &amp; Kyle</div>
+        <div class="walk-detail">Walk down the aisle together</div>
+      </div>
+      <div class="walk-action action-walk">WALK</div>
+    </div>
+    <div class="walk-item fade-in delay-3">
+      <div class="walk-number">3</div>
+      <div>
+        <div class="walk-text">Rachel &amp; Debbie</div>
+        <div class="walk-detail">Walk down the aisle together</div>
+      </div>
+      <div class="walk-action action-walk">WALK</div>
+    </div>
+    <div class="walk-item fade-in delay-4">
+      <div class="walk-number" style="background:var(--wine); font-size:11px;">&#x2764;</div>
+      <div>
+        <div class="walk-text" style="font-size:17px; font-weight:700;">Cliff, Hannah &amp; Steve</div>
+        <div class="walk-detail">The bride enters with her fathers</div>
+      </div>
+      <div class="walk-action action-walk" style="background:rgba(122,59,62,0.15); color:var(--wine);">BRIDE</div>
+    </div>
+  </div>
+</div>
+
+<div class="slide slide-instruction alt" id="slide-15">
+  <div class="inst-heading fade-in">After the Walk &mdash; Hannah's Side</div>
+  <div class="slide-divider fade-in"></div>
+  <div class="walk-group">
+    <div class="walk-item fade-in delay-1">
+      <div class="walk-number" style="background:var(--blue-gray)">&#x1FA91;</div>
+      <div>
+        <div class="walk-text">Beth, Guy, Kyle, Debbie &amp; Cliff</div>
+        <div class="walk-detail">Take their seats in the first row</div>
+      </div>
+      <div class="walk-action action-sit">SIT</div>
+    </div>
+    <div class="walk-item fade-in delay-2">
+      <div class="walk-number" style="background:var(--gold)">&#x1F9CD;</div>
+      <div>
+        <div class="walk-text">Rachel, Erin &amp; Emily</div>
+        <div class="walk-detail">Stand next to Hannah at the altar</div>
+      </div>
+      <div class="walk-action action-stand">STAND</div>
+    </div>
+  </div>
+
+  <div style="margin-top:40px;" class="fade-in delay-3">
+    <div class="church-label" style="color:var(--warm-gray);">HANNAH'S FIRST ROW (Left to Right)</div>
+    <div class="seating-row">
+      <div class="seat"><div class="seat-emoji">&#x1F468;</div><div class="seat-name">Cliff</div><div class="seat-label">Stepdad</div></div>
+      <div class="seat"><div class="seat-emoji">&#x1F469;</div><div class="seat-name">Mom</div><div class="seat-label">Debbie</div></div>
+      <div class="seat"><div class="seat-emoji">&#x1F466;</div><div class="seat-name">Kyle</div><div class="seat-label">Family</div></div>
+      <div class="seat"><div class="seat-emoji">&#x1F466;</div><div class="seat-name">Guy</div><div class="seat-label">Family</div></div>
+      <div class="seat"><div class="seat-emoji">&#x1F469;</div><div class="seat-name">Beth</div><div class="seat-label">Stepmom</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 11: SERVICE BEGINS ===================== -->
+<div class="slide slide-section" id="slide-16">
+  <div class="section-icon fade-in">&#x271E;</div>
+  <div class="section-time fade-in delay-1">THE SERVICE</div>
+  <div class="section-title fade-in delay-1">Steve McClelland</div>
+  <div class="section-subtitle fade-in delay-2">Officiating the ceremony</div>
+</div>
+
+<div class="slide slide-instruction" id="slide-17">
+  <div class="inst-heading fade-in">Order of Service</div>
+  <div class="slide-divider fade-in"></div>
+  <div class="walk-group">
+    <div class="walk-item fade-in delay-1">
+      <div class="walk-number">1</div>
+      <div>
+        <div class="walk-text">Welcoming &amp; Opening</div>
+        <div class="walk-detail">Steve welcomes everyone and frames why Hannah &amp; Remy are together</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-1">
+      <div class="walk-number">2</div>
+      <div>
+        <div class="walk-text">Liturgy Service Begins</div>
+        <div class="walk-detail">Steve leads the liturgy</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-2">
+      <div class="walk-number">3</div>
+      <div>
+        <div class="walk-text">Call to Worship</div>
+        <div class="walk-detail">Why we have gathered &mdash; the bringing together of people</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-2">
+      <div class="walk-number">4</div>
+      <div>
+        <div class="walk-text">Honoring of Wisdom</div>
+        <div class="walk-detail">Three generations &mdash; offered to his granddaughter. On the miracle of God's grace in marriage.</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-3">
+      <div class="walk-number">5</div>
+      <div>
+        <div class="walk-text">Book of Ruth</div>
+        <div class="walk-detail">Scripture reading &mdash; Ruth 1:16&ndash;17</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide slide-instruction dark" id="slide-18">
+  <div class="inst-heading fade-in">The Book of Ruth</div>
+  <div class="slide-divider fade-in"></div>
+  <div class="reading-block fade-in delay-1">
+    Wherever you go, I will go.<br>
+    Wherever you live, I will live.<br>
+    Your people shall be my people<br>
+    and your God will be my God too.<br>
+    Wherever you die, I will die<br>
+    and there will I be buried beside you.<br>
+    We shall be together forever<br>
+    and our love will be the gift of God.
+    <div class="reading-attr">&mdash; Ruth 1:16&ndash;17</div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 12: READINGS ===================== -->
+<div class="slide slide-instruction alt" id="slide-19">
+  <div class="inst-heading fade-in">Readings</div>
+  <div class="slide-divider fade-in"></div>
+  <div class="inst-body fade-in delay-1" style="margin-bottom:20px;">Steve calls on two readers:</div>
+  <div class="walk-group">
+    <div class="walk-item fade-in delay-2">
+      <div class="walk-number" style="background:var(--dusty-rose)">&#x1F4D6;</div>
+      <div>
+        <div class="walk-text">Drew Cuddy</div>
+        <div class="walk-detail">MFK Fisher reading</div>
+      </div>
+      <div class="walk-action action-stand">READS</div>
+    </div>
+    <div class="walk-item fade-in delay-3">
+      <div class="walk-number" style="background:var(--dusty-rose)">&#x1F4D6;</div>
+      <div>
+        <div class="walk-text">Emily Cain</div>
+        <div class="walk-detail">Eric Fromm reading</div>
+      </div>
+      <div class="walk-action action-stand">READS</div>
+    </div>
+  </div>
+  <div class="key-moment fade-in delay-4">
+    <div class="km-icon">&#x1F4A1;</div>
+    <div class="km-text">Drew and Emily: when called by Steve, walk to the front, face the congregation, deliver your reading, and return to your seat.</div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 13: WINE PRAYER ===================== -->
+<div class="slide slide-instruction" id="slide-20">
+  <div class="inst-heading fade-in">Wine Prayer</div>
+  <div class="slide-divider fade-in"></div>
+  <div class="inst-body fade-in delay-1">
+    <span class="inst-highlight">Lucas</span> leads the wine prayer blessing.
+  </div>
+  <div class="key-moment fade-in delay-2">
+    <div class="km-icon">&#x1F377;</div>
+    <div class="km-text">A sacred moment of blessing. The congregation is seated and attentive.</div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 14: VOWS ===================== -->
+<div class="slide slide-section" id="slide-21">
+  <div class="section-icon fade-in">&#x1F48D;</div>
+  <div class="section-time fade-in delay-1">THE VOWS</div>
+  <div class="section-title fade-in delay-1">Sacred Promises</div>
+</div>
+
+<div class="slide slide-instruction dark" id="slide-22">
+  <div class="inst-heading fade-in">Vows &amp; Rings</div>
+  <div class="slide-divider fade-in"></div>
+  <div class="walk-group">
+    <div class="walk-item fade-in delay-1">
+      <div class="walk-number">1</div>
+      <div>
+        <div class="walk-text">Best Man (JP) &amp; Maid of Honor (Rachel) hand the vows</div>
+        <div class="walk-detail">Pass the written vows to Hannah &amp; Remy</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-2">
+      <div class="walk-number">2</div>
+      <div>
+        <div class="walk-text">Hannah &amp; Remy read their vows</div>
+        <div class="walk-detail">Personal vows read to each other</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-3">
+      <div class="walk-number">3</div>
+      <div>
+        <div class="walk-text">Rings brought up by Cindy &amp; Maria</div>
+        <div class="walk-detail">Remy's mother and grandmother carry the rings forward</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-4">
+      <div class="walk-number">4</div>
+      <div>
+        <div class="walk-text">Passage on Hands &mdash; Symbol of Eternity</div>
+        <div class="walk-detail">Rings are gifts from Cindy's mother Ann (Remy's late grandmother) and Remy's grandmother Maria</div>
+      </div>
+    </div>
+  </div>
+  <div class="key-moment fade-in delay-4">
+    <div class="km-icon">&#x1F48D;</div>
+    <div class="km-text"><strong>Cindy &amp; Maria:</strong> When Steve calls for the rings, stand and walk them to the altar. These rings carry the legacy of Ann (Remy's late grandmother) and Maria.</div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 15: CHARGE & CLOSE ===================== -->
+<div class="slide slide-section" id="slide-23">
+  <div class="section-icon fade-in">&#x2764;&#xFE0F;</div>
+  <div class="section-time fade-in delay-1">THE CLOSING</div>
+  <div class="section-title fade-in delay-1">Sealing the Covenant</div>
+</div>
+
+<div class="slide slide-instruction alt" id="slide-24">
+  <div class="inst-heading fade-in">The Final Moments</div>
+  <div class="slide-divider fade-in"></div>
+  <div class="walk-group">
+    <div class="walk-item fade-in delay-1">
+      <div class="walk-number">1</div>
+      <div>
+        <div class="walk-text">Steve gives a charge on love</div>
+        <div class="walk-detail">Final words to the couple and congregation</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-2">
+      <div class="walk-number">2</div>
+      <div>
+        <div class="walk-text">Presentation of a brand new couple</div>
+        <div class="walk-detail">Steve presents Hannah &amp; Remy to all who have gathered</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-3">
+      <div class="walk-number" style="background:var(--wine); font-size:11px;">&#x1F52E;</div>
+      <div>
+        <div class="walk-text" style="font-weight:700; font-size:17px;">Stomp on the Glass</div>
+        <div class="walk-detail">Mazel Tov!</div>
+      </div>
+    </div>
+    <div class="walk-item fade-in delay-4">
+      <div class="walk-number" style="background:var(--wine); font-size:16px;">&#x1F48B;</div>
+      <div>
+        <div class="walk-text" style="font-weight:700; font-size:17px;">The Kiss</div>
+        <div class="walk-detail">The covenant is sealed</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 16: RECESSIONAL ===================== -->
+<div class="slide slide-instruction dark" id="slide-25">
+  <div class="inst-time fade-in">RECESSIONAL</div>
+  <div class="inst-heading fade-in delay-1">The Exit</div>
+  <div class="slide-divider fade-in delay-1"></div>
+  <div class="inst-body fade-in delay-2">
+    <span class="inst-highlight">Emily &amp; James</span> play the final song as Hannah &amp; Remy and the entire wedding party exit the church together.
+  </div>
+  <div class="key-moment fade-in delay-3">
+    <div class="km-icon">&#x1F3B6;</div>
+    <div class="km-text"><strong>Wedding party:</strong> Follow Hannah &amp; Remy out. Groomsmen and bridesmaids pair up and exit after the couple. Chuppah holders bring the canopy down and follow.</div>
+  </div>
+  <div class="key-moment fade-in delay-4" style="margin-top:12px;">
+    <div class="km-icon">&#x1F697;</div>
+    <div class="km-text"><strong>Everyone:</strong> Head to LaRina for the reception! The celebration continues.</div>
+  </div>
+</div>
+
+<!-- ===================== SLIDE 17: FINAL ===================== -->
+<div class="slide slide-title" id="slide-26" style="min-height:60vh;">
+  <div class="title-date fade-in">Saturday, June 13th</div>
+  <div class="title-names fade-in delay-1" style="font-size:clamp(36px,6vw,64px);">HANNAH <span class="title-amp">&</span> REMY</div>
+  <div class="title-line fade-in delay-2"></div>
+  <div class="title-sub fade-in delay-2" style="margin-bottom:20px;">See you at the altar</div>
+  <div class="title-details fade-in delay-3">
+    <span>&#x271E; Resurrection Church</span>
+    <span class="sep">&#x2022;</span>
+    <span>350 Clinton Ave, Brooklyn</span>
+  </div>
+</div>
+
+</div><!-- end slides-container -->
+
+<!-- ============ CONTROLS ============ -->
+<div class="controls">
+  <button class="ctrl-btn" id="btn-prev" onclick="prevSlide()" title="Previous">&#x25C0;</button>
+  <button class="ctrl-btn" id="btn-play" onclick="toggleAutoPlay()" title="Auto-play">&#x25B6;</button>
+  <button class="ctrl-btn" id="btn-next" onclick="nextSlide()" title="Next">&#x25B6;</button>
+  <div class="progress-wrap">
+    <div class="progress-track" id="progress-track" onclick="seekProgress(event)">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="progress-time" id="progress-time">Slide 1 of 27</div>
+  </div>
+  <div class="slide-counter" id="slide-title-display">Title</div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  let currentSlide = 0;
+  let autoPlayInterval = null;
+  let isAutoPlaying = false;
+
+  const slideTitles = [
+    'Title', 'Cast', 'Officiant & Musicians', 'Church Layout', 'Seating Diagram',
+    '3:00 PM — Arrival', '3:30 PM — Guests', '3:45 PM — Opening Music',
+    '4:00 PM — Lucas', '4:05 PM — Chuppah', 'Remy\'s Processional',
+    'Remy\'s Walk Order', 'Remy\'s Seating', 'Hannah\'s Processional',
+    'Hannah\'s Walk Order', 'Hannah\'s Seating', 'The Service',
+    'Order of Service', 'Book of Ruth', 'Readings', 'Wine Prayer',
+    'The Vows', 'Vows & Rings', 'The Closing', 'Final Moments',
+    'Recessional', 'Finale'
+  ];
+
+  function updateUI() {
+    document.getElementById('progress-fill').style.width =
+      ((currentSlide / (totalSlides - 1)) * 100) + '%';
+    document.getElementById('progress-time').textContent =
+      `Slide ${currentSlide + 1} of ${totalSlides}`;
+    document.getElementById('slide-title-display').textContent =
+      slideTitles[currentSlide] || '';
+  }
+
+  function goToSlide(index) {
+    if (index < 0 || index >= totalSlides) return;
+    currentSlide = index;
+    slides[currentSlide].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    updateUI();
+    triggerAnimations(currentSlide);
+  }
+
+  function nextSlide() { goToSlide(currentSlide + 1); }
+  function prevSlide() { goToSlide(currentSlide - 1); }
+
+  function toggleAutoPlay() {
+    const btn = document.getElementById('btn-play');
+    if (isAutoPlaying) {
+      clearInterval(autoPlayInterval);
+      isAutoPlaying = false;
+      btn.classList.remove('active');
+      btn.innerHTML = '&#x25B6;';
+    } else {
+      isAutoPlaying = true;
+      btn.classList.add('active');
+      btn.innerHTML = '&#x23F8;';
+      autoPlayInterval = setInterval(() => {
+        if (currentSlide < totalSlides - 1) {
+          nextSlide();
+        } else {
+          toggleAutoPlay();
+        }
+      }, 6000);
+    }
+  }
+
+  function seekProgress(e) {
+    const track = document.getElementById('progress-track');
+    const rect = track.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    const targetSlide = Math.round(pct * (totalSlides - 1));
+    goToSlide(targetSlide);
+  }
+
+  // Scroll-based slide detection
+  function triggerAnimations(index) {
+    const slide = slides[index];
+    const els = slide.querySelectorAll('.fade-in');
+    els.forEach(el => el.classList.add('visible'));
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const index = Array.from(slides).indexOf(entry.target);
+        if (index !== -1) {
+          currentSlide = index;
+          updateUI();
+          triggerAnimations(index);
+        }
+      }
+    });
+  }, { threshold: 0.4 });
+
+  slides.forEach(slide => observer.observe(slide));
+
+  // Keyboard controls
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      nextSlide();
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      prevSlide();
+    }
+    if (e.key === 'p') {
+      toggleAutoPlay();
+    }
+  });
+
+  // Initial
+  triggerAnimations(0);
+  updateUI();
+</script>
+
+</body>
+</html>
