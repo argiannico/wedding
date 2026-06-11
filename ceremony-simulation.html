@@ -280,6 +280,7 @@ body{background:#000;color:#fff;font-family:'Helvetica Neue',Helvetica,Arial,san
       <div class="person" id="p-stella" style="left:450px;top:740px"><div class="dot dot-family-r">St</div><div class="dot-label">Stella</div></div>
       <div class="person" id="p-jp" style="left:450px;top:740px"><div class="dot dot-party-r">JP</div><div class="dot-label">JP</div></div>
       <div class="person" id="p-drew" style="left:450px;top:740px"><div class="dot dot-party-r">Dr</div><div class="dot-label">Drew</div><div class="dot-sub"></div></div>
+      <div class="person" id="p-lyle" style="left:450px;top:740px"><div class="dot dot-party-r">Ly</div><div class="dot-label">Lyle</div></div>
       <div class="person" id="p-matt" style="left:450px;top:740px"><div class="dot dot-party-r">Mt</div><div class="dot-label">Matt</div></div>
       <div class="person" id="p-sterling" style="left:450px;top:740px"><div class="dot dot-party-r">Sr</div><div class="dot-label">Sterling</div></div>
 
@@ -519,16 +520,16 @@ const scenes = [
   { time:'4:15 PM', phase:'REMY\'S PROCESSIONAL', label:'Remy\'s Family Seated', dur:3000, fn:()=>{
     narrate('REMY\'S PROCESSIONAL','Remy\'s family is now <strong>settled in the front row</strong>. The processional continues.','SEATED','sit');
   }},
-  // 10: JP, Drew, Matt, Sterling walk — then stand at altar
+  // 10: JP, Drew, Lyle, Matt, Sterling walk — then stand at altar
   { time:'4:15 PM', phase:'REMY\'S PROCESSIONAL', label:'Groomsmen Walk & Stand', dur:6000, fn:()=>{
-    narrate('REMY\'S PROCESSIONAL','<strong>JP, Drew, Matt & Sterling</strong> walk down the aisle and take their positions beside Remy.','WALK & STAND','stand');
-    show('p-jp'); show('p-drew'); show('p-matt'); show('p-sterling');
-    move('p-jp',CX-40,650); move('p-drew',CX-14,650); move('p-matt',CX+14,650); move('p-sterling',CX+40,650);
+    narrate('REMY\'S PROCESSIONAL','<strong>JP, Drew, Lyle, Matt & Sterling</strong> walk down the aisle and take their positions beside Remy.','WALK & STAND','stand');
+    show('p-jp'); show('p-drew'); show('p-lyle'); show('p-matt'); show('p-sterling');
+    move('p-jp',CX-56,650); move('p-drew',CX-28,650); move('p-lyle',CX,650); move('p-matt',CX+28,650); move('p-sterling',CX+56,650);
     delay(()=>{
-      move('p-jp',CX-40,350); move('p-drew',CX-14,350); move('p-matt',CX+14,350); move('p-sterling',CX+40,350);
+      move('p-jp',CX-56,350); move('p-drew',CX-28,350); move('p-lyle',CX,350); move('p-matt',CX+28,350); move('p-sterling',CX+56,350);
     },600);
     delay(()=>{
-      move('p-jp',320,160); move('p-drew',285,160); move('p-matt',250,160); move('p-sterling',215,160);
+      move('p-jp',330,160); move('p-drew',295,160); move('p-lyle',260,160); move('p-matt',225,160); move('p-sterling',190,160);
     },2800);
   }},
   // 11: Hannah processional — Erin, Beth, Emily C walk & position
@@ -622,7 +623,7 @@ const scenes = [
   { time:'', phase:'READING', label:'Emily Cain — Eric Fromm', dur:7000, fn:()=>{
     unsetReading('p-drew'); unhl('p-drew');
     setSub('p-drew','');
-    move('p-drew',285,160); // Drew returns to groomsmen
+    move('p-drew',295,160); // Drew returns to groomsmen
     // Emily C walks to reading spot
     setReading('p-emilyc'); hl('p-emilyc');
     setSub('p-emilyc','Reading');
@@ -687,7 +688,7 @@ const scenes = [
       move('p-rachel',CX-25,680); move('p-jp',CX+25,680);
       move('p-erin',CX-40,695); move('p-drew',CX+40,695);
       move('p-emilyc',CX-25,710); move('p-matt',CX+25,710);
-      move('p-sterling',CX,725);
+      move('p-lyle',CX-30,725); move('p-sterling',CX+30,725);
     },3000);
   }},
   // 27: Finale
